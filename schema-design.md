@@ -7,7 +7,7 @@
 - dob: DATE, NOT NULL
 - gender: INT (0 = Male, 1 = Female, 2 = Other)
 - username: VARCHAR(50), UNIQUE, NOT NULL
-- password_hash: VARCHAR(255), NOT NULL
+- password: VARCHAR(255), NOT NULL
 - email: VARCHAR(100), UNIQUE
 - phone: VARCHAR(15), NOT NULL
 - address: VARCHAR(255)
@@ -18,7 +18,7 @@
 - last_name: VARCHAR(50), NOT NULL
 - specialization: VARCHAR(100), NOT NULL
 - username: VARCHAR(50), UNQIUE, NOT NULL
-- password_hash: VARCHAR(255), NOT NULL
+- password: VARCHAR(255), NOT NULL
 - email: VARCHAR(100), UNQIUE, NOT NULL
 - phone: VARCHAR(15), NOT NULL
 
@@ -32,7 +32,7 @@
 ### Table: admins
 - id: INT, Primary Key, Auto Increment
 - username: VARCHAR(50), UNIQUE, NOT NULL
-- password_hash: VARCHAR(255), NOT NULL
+- password: VARCHAR(255), NOT NULL
 - email: VARCHAR(100), UNIQUE
 
 ## MongoDB Collection Design
