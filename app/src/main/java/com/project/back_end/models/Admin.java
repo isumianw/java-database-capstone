@@ -1,7 +1,13 @@
 package com.project.back_end.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import jakarta.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -11,9 +17,11 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 50)
     @NotNull(message = "Username cannot be null")
     private String username;
 
+    @Column(nullable = false, length = 255)
     @NotNull(message = "Password cannot be null")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
