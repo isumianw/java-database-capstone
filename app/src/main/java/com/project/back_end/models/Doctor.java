@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @Entity
+@Table(name = "doctors")
 public class Doctor {
 
     @Id
@@ -18,31 +19,29 @@ public class Doctor {
     private Long id;
 
     @Column(nullable = false, length = 255)
-    @NotNull
+    @NotNull(message = "Name cannot be null")
     private String name;
 
     @Column(nullable = false, length = 100)
-    @NotNull
+    @NotNull(message = "Speciality cannot be null")
     private String speciality;
 
 
     @Column(nullable = false, length = 255)
-    @NotNull
+    @NotNull(message = "Email cannot be null")
     @Email
     private String email;
 
     @Column(nullable = false, length = 255)
-    @NotNull
+    @NotNull(message = "Password cannot be null")
     @Size(min = 6)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-
     @Column(nullable = false, length = 15)
-    @NotNull
+    @NotNull(message = "Phone number cannot be null")
     @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone must be 10–15 digits")
     private String phone;
-
 
     @ElementCollection
     private List<String> availableTimes;

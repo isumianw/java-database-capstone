@@ -9,29 +9,34 @@ import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Table(name = "patients")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 255)
     @NotNull(message = "Name cannot be null")
-    @Size(min = 3, max = 100)
     private String name;
 
+    @Column(nullable = false, length = 255)
     @NotNull(message = "Email cannot be null")
     @Email
     private String email;
 
+    @Column(nullable = false, length = 255)
     @NotNull(message = "Password cannot be null")
     @Size(min = 6)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column(nullable = false, length = 15)
     @NotNull(message = "Phone number cannot be null")
-    @Pattern(regexp = "[0-9]{10}$")
+    @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone must be 10–15 digits")
     private String phone;
 
-    @NotNull
+
     @Size(max = 255)
     private String address;
 

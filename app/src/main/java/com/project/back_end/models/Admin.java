@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Table(name = "admins")
 public class Admin {
 
     @Id
