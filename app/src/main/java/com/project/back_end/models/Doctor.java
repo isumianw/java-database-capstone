@@ -41,10 +41,6 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
-    // Constructor
-    public Doctor() {
-    }
-
     // Getters and Setters:
     public Long getId() {
         return id;
