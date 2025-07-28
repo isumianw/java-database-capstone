@@ -89,5 +89,15 @@ public class Doctor {
     public void setAvailableTimes(List<String> availableTimes) {
         this.availableTimes = availableTimes;
     }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            ", phone='" + phone + '\'' +
+            '}';
+    }
 }
 

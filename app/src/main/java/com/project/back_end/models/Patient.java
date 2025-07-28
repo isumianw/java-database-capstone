@@ -77,4 +77,16 @@ public class Patient {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            ", phone='" + phone + '\'' +
+            ", address='" + address + '\'' +
+            '}';
+    }
+
 }

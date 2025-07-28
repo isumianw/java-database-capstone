@@ -2,6 +2,7 @@ package com.project.back_end.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -99,5 +100,17 @@ public class Appointment {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", doctorId=" + (doctor != null ? doctor.getId() : "null") +
+                ", patientId=" + (patient != null ? patient.getId() : "null") +
+                ", appointmentTime=" + appointmentTime +
+                ", status=" + status +
+                '}';
+    }
+
 }
 
