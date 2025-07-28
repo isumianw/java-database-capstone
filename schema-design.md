@@ -22,7 +22,7 @@
 - doctor_id: INT, Foreign Key → doctors(id)
 - patient_id: INT, Foreign Key → patients(id)
 - appointment_time: DATETIME, NOT NULL
-- status: INT (0 = Scheduled, 1 = Completed)
+- status: INT (0 = Scheduled, 1 = Completed), NOT NULL
 
 ### Table: admins
 - id: INT, Primary Key, Auto Increment
