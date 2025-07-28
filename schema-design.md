@@ -37,51 +37,18 @@
 
 ## MongoDB Collection Design
 
+### Collection: prescriptions
+```json
 {
-  "_id": "ObjectId('64fabc123456')",
+  "_id": "ObjectId('64abc123456')",
+  "patientName": "John Smith",
   "appointmentId": 51,
-  "patient": {
-    "id": 201,
-    "name": "John Smith",
-    "age": 28,
-    "gender": "Female"
-  },
-  "doctor": {
-    "id": 103,
-    "name": "Dr. James Ruby",
-    "specialization": "General Physician"
-  },
-  "issuedDate": "2025-07-25T09:30:00Z",
-  "medications": [
-    {
-      "name": "Amoxicillin",
-      "dosage": "500mg",
-      "frequency": "3 times a day",
-      "duration": "7 days",
-      "notes": "After meals"
-    },
-    {
-      "name": "Panadol",
-      "dosage": "500mg",
-      "frequency": "Every 6 hours",
-      "duration": "5 days"
-    }
-  ],
-  "doctorNotes": "Patient shows signs of mild infection. Monitor temperature daily.",
-  "tags": ["infection", "antibiotics"],
+  "medication": "Paracetamol",
+  "dosage": "500mg",
+  "doctorNotes": "Take 1 tablet every 6 hours.",
+  "refillCount": 2,
   "pharmacy": {
-    "name": "Medicare Pharmacy",
-    "location": "Marker Street"
+    "name": "Walgreens SF",
+    "location": "Market Street"
   }
-  "refill": {
-    "allowed": true,
-    "refillCount": 1,
-    "lastRefilled": "2025-07-27T08:00:00Z",
-  }
-  "attachments": [
-    {
-      "filename": "blood_test_results.pdf",
-      "url": "/uploads/blodd_text_results.pdf"
-    }
-  ]
 }
