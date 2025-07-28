@@ -2,18 +2,15 @@
 
 ### Table: patients
 - id: INT, Primary Key, Auto Increment
-- first_name: VARCHAR(50), NOT NULL
-- last_name: VARCHAR(50), NOT NUL
-- dob: DATE, NOT NULL
-- gender: INT (0 = Male, 1 = Female, 2 = Other)
-- username: VARCHAR(50), UNIQUE, NOT NULL
+- name: VARCHAR(50), NOT NULL
+- email: VARCHAR(255), NOT NULL
 - password: VARCHAR(255), NOT NULL
 - phone: VARCHAR(15), NOT NULL
 - address: VARCHAR(255)
 
 ### Table: doctors
 - id: INT, Primary Key, Auto Increment
-- name: VARCHAR(50), NOT NULL
+- name: VARCHAR(255), NOT NULL
 - speciality: VARCHAR(100), NOT NULL
 - email: VARCHAR(255), NOT NULL
 - password: VARCHAR(255), NOT NULL
