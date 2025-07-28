@@ -17,26 +17,32 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Name cannot be null")
-    @Size(min = 3, max = 100)
+    @Column(nullable = false, length = 255)
+    @NotNull
     private String name;
 
-    @NotNull (message = "Speciality cannot be null")
-    @Size(min = 3, max = 50)
+    @Column(nullable = false, length = 100)
+    @NotNull
     private String speciality;
 
-    @NotNull(message = "Email cannot be null")
+
+    @Column(nullable = false, length = 255)
+    @NotNull
     @Email
     private String email;
 
-    @NotNull(message = "Password cannot be null")
+    @Column(nullable = false, length = 255)
+    @NotNull
     @Size(min = 6)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @NotNull(message = "Phone number cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$")
+
+    @Column(nullable = false, length = 15)
+    @NotNull
+    @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone must be 10–15 digits")
     private String phone;
+
 
     @ElementCollection
     private List<String> availableTimes;
