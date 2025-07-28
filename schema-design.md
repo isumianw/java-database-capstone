@@ -40,9 +40,4 @@
   "medication": "Paracetamol",
   "dosage": "500mg",
   "doctorNotes": "Take 1 tablet every 6 hours.",
-  "refillCount": 2,
-  "pharmacy": {
-    "name": "Walgreens SF",
-    "location": "Market Street"
-  }
 }
