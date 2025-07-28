@@ -1,14 +1,20 @@
 package com.project.back_end.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Future;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Appointment {
@@ -18,13 +24,16 @@ public class Appointment {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "doctor_id", nullable = false)
     @NotNull
     private Doctor doctor;
 
     @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
     @NotNull
     private Patient patient;
 
+    @NotNull
     @Future
     private LocalDateTime appointmentTime;
 
