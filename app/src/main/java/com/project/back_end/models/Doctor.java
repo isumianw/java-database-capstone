@@ -24,7 +24,7 @@ public class Doctor {
 
     @Column(nullable = false, length = 100)
     @NotNull(message = "Speciality cannot be null")
-    private String speciality;
+    private String specialty;
 
 
     @Column(nullable = false, length = 255)
@@ -59,11 +59,11 @@ public class Doctor {
     public void setName(String name) {
         this.name = name;
     }
-    public String getSpeciality() {
-        return speciality;
+    public String getSpecialty() {
+        return specialty;
     }
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
     public String getEmail() {
         return email;
