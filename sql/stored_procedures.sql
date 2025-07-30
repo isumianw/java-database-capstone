@@ -12,11 +12,11 @@ BEGIN
         p.name AS patient_name,
         p.phone AS patient_phone
     FROM 
-        appointment a
+        appointments a
     JOIN 
-        doctor d ON a.doctor_id = d.id
+        doctors d ON a.doctor_id = d.id
     JOIN 
-        patient p ON a.patient_id = p.id
+        patients p ON a.patient_id = p.id
     WHERE 
         DATE(a.appointment_time) = report_date
     ORDER BY 
@@ -37,7 +37,7 @@ BEGIN
         doctor_id, 
         COUNT(patient_id) AS patients_seen
     FROM
-        appointment
+        appointments
     WHERE
         MONTH(appointment_time) = input_month 
         AND YEAR(appointment_time) = input_year
@@ -61,7 +61,7 @@ BEGIN
         doctor_id, 
         COUNT(patient_id) AS patients_seen
     FROM
-        appointment
+        appointments
     WHERE
         YEAR(appointment_time) = input_year
     GROUP BY
