@@ -1,37 +1,53 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Select Role</title>
-        <link rel="icon" type="image/png" href="../assets/images/logo/logo.png">
-        <link rel="stylesheet" href="../assets/css/index.css">
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <script src="../js/util.js" defer></script>
-        <script src="../js/render.js" defer></script>
-        <script src="../js/components/header.js" defer></script>
-        <script src="../js/components/footer.js" defer></script>
+    <meta charset="UTF-8">
+    <title>Clinic Management System</title>
+    <link rel="icon" type="image/png" href="./assets/images/logo/favicon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- JS Utilities -->
+    <script src="./js/util.js" defer></script>
+    <script src="./js/render.js" defer></script>
+
+    <!-- JS Components -->
+    <script src="./js/components/header.js" defer></script>
+    <script src="./js/components/footer.js" defer></script>
     </head>
     <body>
-        <div class="container">
+        <main>
+            <div class="container">
             <div class="wrapper">
-                <div id="header-placeholder"></div>
+                <!-- Header Placeholder -->
+                <div id="header"></div>
+        
+                <!-- Main Content -->
                 <main class="main-content">
-                    <h1>Select Your Role</h1>
-                    <button id="admin-btn">Admin</button>
-                    <button id="patient-btn">Patient</button>
-                    <button id="doctor-btn">Doctor</button>
+                <h2>Select Your Role</h2>
+                <div class="role-buttons">
+                    <button id="admin-btn" onclick="selectRole('Admin')">Admin</button>
+                    <button id="doctor-btn" onclick="selectRole('Doctor')">Doctor</button>
+                    <button id="patient-btn" onclick="selectRole('Patient')">Patient</button>
+                </div>
                 </main>
-                <div id="footer-placeholder"></div>
+        
+                <!-- Footer Placeholder -->
+                <div id="footer"></div>
             </div>
-        </div>
-        <div id="modal" class="modal hidden">
+            </div>
+        </main>
+        
+        <!-- Modal -->
+        <div id="modal" class="modal" style="display: none;">
             <div class="modal-content">
-                <span id="close-modal" class="close-button">&times;</span>
+                <span id="closeModal" class="close">&times;</span>
                 <div id="modal-body"></div>
             </div>
         </div>
-        <script type="module" src="../js/index.js" defer></script>
+
+        <script type="module" src="./js/services/index.js" defer></script>
     </body>
 </html>
