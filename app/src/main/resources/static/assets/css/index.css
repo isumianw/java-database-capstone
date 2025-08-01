@@ -39,7 +39,7 @@ html, body {
 
 .main-content h2 {
     font-size: 50px;
-    color: #111827;
+    color: #011548;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -52,7 +52,7 @@ html, body {
 }
   
 .role-buttons button {
-    background-color: #6a7b83;
+    background-color: #223e84;
     color: white;
     padding: 12px 24px;
     border: none;
@@ -63,7 +63,7 @@ html, body {
 }
   
 .role-buttons button:hover {
-    background-color: #2980b9;
+    background-color: #75a9cc;
 }
   
 .modal {
