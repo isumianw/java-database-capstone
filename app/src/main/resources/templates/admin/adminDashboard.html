@@ -2,12 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Dashboard</title>
         <link rel="icon" type="image/png" th:href="@{./assets/images/logo/logo.png}" />
 
         <!-- CSS -->
-        <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}" />
-        <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+        <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 
         <!-- JS Utilities -->
         <script th:src="@{/js/render.js}" defer></script>
@@ -61,6 +62,6 @@
 
         <!-- Admin Dashboard Services -->
         <script type="module" src="../js/services/adminDashboard.js" defer></script>
-        <script type="module" src="../js/serivces/doctorCard.js" defer></script>
+        <script type="module" src="../js/components/doctorCard.js" defer></script>
     </body>
 </html>

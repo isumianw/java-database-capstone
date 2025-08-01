@@ -1,2 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Doctor Dashboard</title>
+        <link rel="icon" type="image/png" th:href="@{./assets/images/logo/logo.png}" />
+
+        <!-- CSS files -->
+        <link rel="stylesheet" th:href="@{/assets/css/doctorDashboard.css}">
+        <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+
+        <!-- JS files -->
+        <script th:src="@{/js/render.js}" defer></script>
+        <script th:src="@{/js/util.js}" defer></script>
+        <script th:src="@{/js/components/header.js}" defer></script>
+        <script th:src="@{/js/components/footer.js}" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="wrapper">
+                <!-- Header -->
+                <div id="header"></div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Search Bar -->
+                    <input type="text" id="searchBar" placeholder="Search patients"/>
+
+                    <!-- Filters -->
+                    <div class="filters">
+                        <button id="todayAppointmentsBtn">Today's Appointments</button>
+                        <input type="date" id="appointmentDate"/>
+                    </div>
+
+                    <!-- Patient Table -->
+                    <table id="patientTable">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Prescription</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+
+                    <!-- No Records Message -->
+                    <p class="noPatientRecord" style="display: none;">No patient records found.</p>
+                </div>
+
+                <!-- Footer -->
+                <div id="footer"></div>
+            </div>
+        </div>
+
+        <!-- Doctor Dashboard Services-->
+        <script type="module" src="../js/components/patientRows.js" defer></script>
+        <script type="module" src="../js/services/patientServices.js" defer></script>
+        <script type="module" src="../js/doctorDashboard.js" defer></script>
+    </body>
+</html>
