@@ -41,7 +41,7 @@ html, body {
 
 .filters {
     display: flex;
-    gap: x;
+    gap: 12px;
     margin-bottom: 20px;
 }
 
@@ -108,4 +108,19 @@ html, body {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .doctor-card {
+        flex: 1 1 100%;
+    }
+
+    #searchBar {
+        max-width: 100%;
+    }
 }

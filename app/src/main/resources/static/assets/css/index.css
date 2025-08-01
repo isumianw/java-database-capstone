@@ -101,4 +101,16 @@ html, body {
 .close:hover {
     color: #000;
 }
+
+@media (max-width: 600px) {
+  .role-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .role-buttons button {
+    width: 100%;
+  }
+}
+
   

@@ -97,3 +97,14 @@ body, html {
     font-style: italic;
     margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+    #searchBar, .filters input, .filters button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+}
