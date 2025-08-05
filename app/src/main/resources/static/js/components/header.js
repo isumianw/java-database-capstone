@@ -2,7 +2,7 @@ function renderHeader() {
     const headerDiv = document.getElementById("header");
     if (!headerDiv) return;
 
-    // Clear session if on homepage
+    // Clear session on homepage
     if (window.location.pathname.endsWith("/")) {
         localStorage.removeItem("userRole");
         localStorage.removeItem("token");
@@ -11,7 +11,7 @@ function renderHeader() {
     const role = localStorage.getItem("userRole");
     const token = localStorage.getItem("token");
 
-    // If role is logged in but no token, session expired
+    // Handle expired session
     if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
         localStorage.removeItem("userRole");
         alert("Session expired or invalid login. Please log in again.");
@@ -22,55 +22,53 @@ function renderHeader() {
     let headerContent = "";
 
     if (role === "admin") {
-        headerContent = `
-            <button id="addDocBtn" class="adminBtn" onclick="openModal('addDoctor')">Add Doctor</button>
+        headerContent += `
+            <button id="addDocBtn" class="adminBtn">Add Doctor</button>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "doctor") {
-        headerContent = `
+        headerContent += `
             <a href="/doctorDashboard.html">Home</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "loggedPatient") {
-        headerContent = `
+        headerContent += `
             <a href="/patientDashboard.html">Home</a>
-            <a href="/patientAppointments.html">Appointments</a>
+            <a href="/appointments.html">Appointments</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "patient") {
-        headerContent = `
-            <a href="/login.html">Login</a>
-            <a href="/signup.html">Sign Up</a>
+        // MODAL-based buttons
+        headerContent += `
+            <a href="#" id="loginModalBtn">Login</a>
+            <a href="#" id="signupModalBtn">Sign Up</a>
         `;
     }
 
     headerDiv.innerHTML = headerContent;
+
+    // listeners
     attachHeaderButtonListeners();
 
     function attachHeaderButtonListeners() {
         const logoutBtn = document.getElementById("logoutBtn");
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", logout);
-        }
+        if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
         const addDocBtn = document.getElementById("addDocBtn");
-        if (addDocBtn) {
-            addDocBtn.addEventListener("click", function () {
-                openModal("addDoctor");
-            });
-        }
+        if (addDocBtn) addDocBtn.addEventListener("click", () => openModal("addDoctor"));
+
+        // Modal triggers for unauthenticated patient
+        const loginBtn = document.getElementById("loginModalBtn");
+        if (loginBtn) loginBtn.addEventListener("click", () => openModal("patientLogin"));
+
+        const signupBtn = document.getElementById("signupModalBtn");
+        if (signupBtn) signupBtn.addEventListener("click", () => openModal("patientSignup"));
     }
 
     function logout() {
         localStorage.removeItem("userRole");
         localStorage.removeItem("token");
         window.location.href = "/";
-    }
-
-    function logoutPatient() {
-        localStorage.removeItem("token");
-        localStorage.setItem("userRole", "patient");
-        window.location.href = "/patientDashboard.html";
     }
 }
 
