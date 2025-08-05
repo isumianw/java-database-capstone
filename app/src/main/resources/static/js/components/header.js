@@ -34,7 +34,7 @@ function renderHeader() {
     } else if (role === "loggedPatient") {
         headerContent = `
             <a href="/patientDashboard.html">Home</a>
-            <a href="/appointments.html">Appointments</a>
+            <a href="/patientAppointments.html">Appointments</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "patient") {
