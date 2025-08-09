@@ -41,7 +41,7 @@ public class PatientService {
 
     @Transactional
     public ResponseEntity<Map<String, Object>> getPatientAppointment(Long id, String token) {
-        String email = tokenService.extractIdentifier(token);
+        String email = tokenService.extractEmail(token);
         Patient patient = patientRepository.findByEmail(email);
 
         if (patient == null || !patient.getId().equals(id)) {
@@ -115,7 +115,7 @@ public class PatientService {
     }
 
     public ResponseEntity<Map<String, Object>> getPatientDetails(String token) {
-        String email = tokenService.extractIdentifier(token);
+        String email = tokenService.extractEmail(token);
         Patient patient = patientRepository.findByEmail(email);
 
         if (patient == null) {

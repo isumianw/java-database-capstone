@@ -73,7 +73,7 @@ public class AppointmentService {
 
     @Transactional
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
-        String doctorEmail = tokenService.extractIdentifier(token);
+        String doctorEmail = tokenService.extractEmail(token);
 
         var doctor = doctorRepository.findByEmail(doctorEmail);
         if (doctor == null) {
