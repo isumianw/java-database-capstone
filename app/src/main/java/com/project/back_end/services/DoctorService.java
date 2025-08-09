@@ -1,5 +1,21 @@
 package com.project.back_end.services;
 
+import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+
+import com.project.back_end.models.Doctor;
+import com.project.back_end.models.Appointment;
+import com.project.back_end.repo.AppointmentRepository;
+import com.project.back_end.repo.DoctorRepository;
+import com.project.back_end.service.TokenService;
+
+@Service
 public class DoctorService {
 
 // 1. **Add @Service Annotation**:
@@ -11,7 +27,17 @@ public class DoctorService {
 //    - The `DoctorService` class depends on `DoctorRepository`, `AppointmentRepository`, and `TokenService`.
 //    - These dependencies should be injected via the constructor for proper dependency management.
 //    - Instruction: Ensure constructor injection is used for injecting dependencies into the service.
+    private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final TokenService tokenService;
 
+    public AppointmentService(AppointmentRepository appointmentRepository,
+                                DoctorRepository doctorRepository,
+                                TokenService tokenService) {
+        this.appointmentRepository = appointmentRepository;
+        this.doctorRepository = doctorRepository;
+        this.tokenService = tokenService;
+    }
 // 3. **Add @Transactional Annotation for Methods that Modify or Fetch Database Data**:
 //    - Methods like `getDoctorAvailability`, `getDoctors`, `findDoctorByName`, `filterDoctorsBy*` should be annotated with `@Transactional`.
 //    - The `@Transactional` annotation ensures that database operations are consistent and wrapped in a single transaction.
@@ -21,7 +47,27 @@ public class DoctorService {
 //    - Retrieves the available time slots for a specific doctor on a particular date and filters out already booked slots.
 //    - The method fetches all appointments for the doctor on the given date and calculates the availability by comparing against booked slots.
 //    - Instruction: Ensure that the time slots are properly formatted and the available slots are correctly filtered.
+    public List<String> getDoctorAvailability(Long doctorId, LocalDate date) {
+        List<String> allSlots = List.of("09:00 AM", "")List<String> allSlots = List.of("09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM");
 
+        // Get appointments for that doctor on that date
+        List<Appointment> appointments = appointmentRepository
+            .findByDoctorIdAndAppointmentTimeBetween(
+                doctorId, 
+                date.atStartOfDay(), 
+                date.plusDays(1).atStartOfDay()
+            );
+        
+        // Extract booked slots from appointments
+        Set<String> bookedSlots = appointments.stream()
+            .map(a -> a.getAppointmentTime().toLocalTime().toString())
+            .collect(Collectors.toSet());
+        
+        // Filter out booked slots
+        return allSlots.stream()
+            .filter(slot -> !bookedSlots.contains(slot))
+            .collect(Collectors.toList());
+    }
 // 5. **saveDoctor Method**:
 //    - Used to save a new doctor record in the database after checking if a doctor with the same email already exists.
 //    - If a doctor with the same email is found, it returns `-1` to indicate conflict; `1` for success, and `0` for internal errors.
