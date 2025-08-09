@@ -52,4 +52,20 @@ public class AppointmentDTO {
     public LocalDate getAppointmentDate() { return appointmentDate; }
     public LocalTime getAppointmentTimeOnly() { return appointmentTimeOnly; }
     public LocalDateTime getEndTime() { return endTime; }
+
+    public static AppointmentDTO fromEntity(Appointment appointment) {
+        return new AppointmentDTO(
+            appointment.getId(),
+            appointment.getDoctor().getId(),
+            appointment.getDoctor().getName(),
+            appointment.getPatient().getId(),
+            appointment.getPatient().getName(),
+            appointment.getPatient().getEmail(),
+            appointment.getPatient().getPhone(),
+            appointment.getPatient().getAddress(),
+            appointment.getAppointmentTime(),
+            appointment.getStatus()
+        );
+    }
+    
 }
