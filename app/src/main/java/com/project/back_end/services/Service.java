@@ -34,7 +34,7 @@ public class Service {
         this.patientService = patientService;
     }
 
-    public ResponseEntity<String, String>> validateToken(String token, String user) {
+    public ResponseEntity<Map<<String, String>> validateToken(String token, String user) {
         Map<String, String> response = new HashMap<>();
 
         boolean valid = tokenService.validateToken(token, user);
