@@ -30,6 +30,17 @@ public class PatientService {
         this.tokenService = tokenService;
     }
 
+    public boolean patientExists(String email, String phone) {
+    Patient byEmail = patientRepository.findByEmail(email);
+        if (byEmail != null) {
+            return true;
+        }
+    
+        Patient byPhone = patientRepository.findByPhone(phone);
+        return byPhone != null;
+    }
+
+
     public int createPatient(Patient patient) {
         try {
             patientRepository.save(patient);
