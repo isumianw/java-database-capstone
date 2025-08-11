@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import com.project.back_end.models.*;
@@ -11,7 +12,7 @@ import com.project.back_end.repo.*;
 import com.project.back_end.DTO.Login;
 
 @Service
-public class Service {
+public class CommonService {
 
     private final TokenService tokenService;
     private final AdminRepository adminRepository;
@@ -20,7 +21,7 @@ public class Service {
     private final DoctorService doctorService;
     private final PatientService patientService;
 
-    public Service(TokenService tokenService,
+    public CommonService(TokenService tokenService,
                     AdminRepository adminRepository,
                     DoctorRepository doctorRepository,
                     PatientRepository patientRepository,

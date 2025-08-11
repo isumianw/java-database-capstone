@@ -2,7 +2,7 @@ package com.project.back_end.controllers;
 
 import com.project.back_end.models.Prescription;
 import com.project.back_end.services.PrescriptionService;
-import com.project.back_end.services.Service;
+import com.project.back_end.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.Map;
 public class PrescriptionController {
     
     private final PrescriptionService prescriptionService;
-    private final Service service;
+    private final CommonService service;
 
     @Autowired
-    public PrescriptionController(PrescriptionService prescriptionService, Service service) {
+    public PrescriptionController(PrescriptionService prescriptionService, CommonService service) {
         this.prescriptionService = prescriptionService;
         this.service = service;
     }

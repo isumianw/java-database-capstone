@@ -82,8 +82,11 @@ public class DoctorService {
     }
 
     @Transactional
-    public List<Doctor> getDoctors() {
-        return doctorRepository.findAll();
+    public Map<String, Object> getDoctors() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("doctors", doctors);
+        return result;
     }
 
     @Transactional
@@ -126,7 +129,7 @@ public class DoctorService {
 
     public Map<String, Object> filterDoctorsByNameSpecilityandTime(String name, String specialty, String amOrPm) {
         List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCaseAndSpecialtyIgnoreCase(name, specialty);
-        doctors = filterDoctorsByTime(doctors, amOrPm);
+        doctors = filterDoctorByTime(doctors, amOrPm);
 
         Map<String, Object> result = new HashMap<>();
         result.put("doctors", doctors);

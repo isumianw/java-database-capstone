@@ -100,7 +100,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void changeStatus(Long appointmentId, String newStatus) {
+    public void changeStatus(Long appointmentId, int newStatus) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
             .orElseThrow(() -> new RuntimeException("Appointment not found"));
         

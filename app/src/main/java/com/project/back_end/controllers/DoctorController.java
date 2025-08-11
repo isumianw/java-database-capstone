@@ -3,22 +3,23 @@ package com.project.back_end.controllers;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.services.DoctorService;
-import com.project.back_end.services.Service;
+import com.project.back_end.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("${api.path}doctor")
 public class DoctorController {
 
     private final DoctorService doctorService;
-    private final Service service;
+    private final CommonService service;
 
     @Autowired
-    public DoctorController(DoctorService doctorService, Service service) {
+    public DoctorController(DoctorService doctorService, CommonService service) {
         this.doctorService = doctorService;
         this.service = service;
     }
@@ -27,7 +28,7 @@ public class DoctorController {
     public ResponseEntity<?> getDoctorAvailability(
         @PathVariable String user,
         @PathVariable Long doctorId,
-        @PathVariable String date,
+        @PathVariable LocalDate date,
         @PathVariable String token) {
 
         var tokenValidation = service.validateToken(token, user);
@@ -41,8 +42,9 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllDoctors() {
-        Map<String, Object> doctors = doctorService.getDoctors();
-        return ResponseEntity.ok(doctors);
+        List<Doctor> doctorList = doctorService.getDoctors();
+        Map<String, Object> response = Map.of("doctors", doctorList);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{token}")

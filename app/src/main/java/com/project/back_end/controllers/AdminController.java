@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 import com.project.back_end.models.Admin;
-import com.project.back_end.services.Service;
+import com.project.back_end.services.CommonService;
 
 @RestController
 @RequestMapping("${api.path}admin")
 public class AdminController {
 
-    private final Service service;
+    private final CommonService service;
 
     @Autowired
-    public AdminController(Service service) {
+    public AdminController(CommonService service) {
         this.service = service;
     }
 
