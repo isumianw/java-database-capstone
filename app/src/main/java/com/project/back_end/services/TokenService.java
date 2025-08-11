@@ -47,7 +47,7 @@ public class TokenService {
 
         return Jwts.builder()
             .setSubject(email) 
-            .setIssuedAt(now);
+            .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(getSigningKey(), SignatureAlgorithm.HS256)
             .compact();
@@ -66,7 +66,7 @@ public class TokenService {
         try {
             String email = extractEmail(token);
 
-            swtich (userType.toLowerCase()) {
+            switch (userType.toLowerCase()) {
                 case "admin":
                     return adminRepository.findByEmail(email) != null;
                 case "doctor":

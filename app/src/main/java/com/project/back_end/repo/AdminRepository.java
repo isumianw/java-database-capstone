@@ -8,5 +8,6 @@ import com.project.back_end.models.Admin;
 public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Admin findByUsername(String username);
+    Admin findByEmail(String email);
 
 }

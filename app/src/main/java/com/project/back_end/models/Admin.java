@@ -28,6 +28,10 @@ public class Admin {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column(nullable = false, length = 255)
+    @NotNull(message = "Password cannot be null")
+    private String email;
+
     // Constructors
     public Admin() {
     }
@@ -35,6 +39,7 @@ public class Admin {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     // Getters and Setters
@@ -56,6 +61,14 @@ public class Admin {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

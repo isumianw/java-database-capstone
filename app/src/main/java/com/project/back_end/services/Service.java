@@ -34,7 +34,7 @@ public class Service {
         this.patientService = patientService;
     }
 
-    public ResponseEntity<Map<<String, String>> validateToken(String token, String user) {
+    public ResponseEntity<Map<String, String>> validateToken(String token, String user) {
         Map<String, String> response = new HashMap<>();
 
         boolean valid = tokenService.validateToken(token, user);
@@ -118,7 +118,7 @@ public class Service {
         }
 
         if (condition != null && !condition.isEmpty() && name != null && !name.isEmpty()) {
-            return patientService.filterByDoctorAndCondition(condition, name);
+            return patientService.filterByDoctorAndCondition(condition, name, patient.getId());
         } else if (condition != null && !condition.isEmpty()) {
             return patientService.filterByCondition(condition, patient.getId());
         } else if (name != null && !name.isEmpty()) {

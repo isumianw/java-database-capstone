@@ -68,6 +68,8 @@ public class AppointmentController {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
 
-        appointmentService.cancelAppointment
+        appointmentService.cancelAppointment(id, token);
+        return ResponseEntity.ok(Map.of("message", "Appointment cancelled successfully"));
+
      }
-, ""Ap}
+}

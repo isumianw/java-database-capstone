@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Set;
 
 import com.project.back_end.models.Doctor;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
-import com.project.back_end.service.TokenService;
+import com.project.back_end.services.TokenService;
 
 @Service
 public class DoctorService {
