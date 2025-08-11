@@ -24,13 +24,13 @@ public class AppointmentController {
     }
 
     @GetMapping("/{date}/{patientName}/{token}")
-    public ResponseEntity<?> getAppointments(@PathVariable LocalDate date, @PathVariable String patientName, @PathVariable String token) {
+    public ResponseEntity<?> getAppointments(@PathVariable String patientName, @PathVariable LocalDate date, @PathVariable String token) {
         var tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getBody().get("message").equals("Token is valid")) {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
 
-        return ResponseEntity.ok(appointmentService.getAppointment(date, patientName, token));
+        return ResponseEntity.ok(appointmentService.getAppointment(patientName, date, token));
     }
 
     @PostMapping("/{token}")

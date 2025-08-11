@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 import java.time.LocalDate;
 
 @RestController
@@ -36,14 +38,18 @@ public class DoctorController {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
 
-        Map<String, Object> availability = doctorService.getDoctorAvailability(doctorId, date);
-        return ResponseEntity.ok(availability);
+        List<String> availability = doctorService.getDoctorAvailability(doctorId, date);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("availability", availability);
+
+        return ResponseEntity.ok(response);
+
     }
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllDoctors() {
-        List<Doctor> doctorList = doctorService.getDoctors();
-        Map<String, Object> response = Map.of("doctors", doctorList);
+        Map<String, Object> response = doctorService.getDoctors();  
         return ResponseEntity.ok(response);
     }
 

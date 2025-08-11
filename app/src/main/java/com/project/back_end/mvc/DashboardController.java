@@ -17,20 +17,21 @@ public class DashboardController {
 
     @GetMapping("/adminDashboard/{token}")
     public String adminDashboard(@PathVariable String token) {
-        Map<String, Object> result = tokenService.validateToken(token, "admin");
+        boolean isValid = tokenService.validateToken(token, "admin");
 
-        if (result.isEmpty()) {
-            return "admin/adminDashboard";
+        if (isValid) {
+            return "admin/adminDashboard";  // valid token, show dashboard
         } else {
-            return "redirect:/";
+            return "redirect:/";  // invalid token, redirect
         }
     }
 
+
     @GetMapping("/doctorDashboard/{token}")
     public String doctorDashboard(@PathVariable String token) {
-        Map<String, Object> result = tokenService.validateToken(token, "doctor");
+        boolean isValid = tokenService.validateToken(token, "doctor");
 
-        if (result.isEmpty()) {
+        if (isValid) {
             return "doctor/doctorDashboard";
         } else {
             return "redirect:/";
