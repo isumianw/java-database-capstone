@@ -54,12 +54,13 @@ public class TokenService {
     }
 
     public String extractEmail(String token) {
-        return Jwts.parserBuilder()                // Create the parser builder
-                .setSigningKey(getSigningKey())    
-                .build()                          
-                .parseClaimsJws(token)             
-                .getBody()                        
-                .getSubject();                    
+        return Jwts.parser()
+        .verifyWith(getSigningKey())
+        .build()
+        .parseSignedClaims(token)
+        .getPayload()
+        .getSubject();
+                   
     }
     
     
