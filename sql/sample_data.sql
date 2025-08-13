@@ -216,5 +216,5 @@ INSERT INTO appointments (appointment_time, status, doctor_id, patient_id) VALUE
 ('2025-04-10 13:00:00.000000', 1, 4, 7);
 
 -- Insert into admins table
-INSERT INTO admins (username, password)
-VALUES ('admin', 'admin@1234');
+INSERT INTO admins (username, password, email)
+VALUES ('admin', 'admin@1234', 'admin1234@gmail.com');
