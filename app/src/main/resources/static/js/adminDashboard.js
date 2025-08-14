@@ -12,22 +12,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadDoctorCards() {
     try {
-        const doctors = await getDoctors();
+        const response = await getDoctors();
+        const doctors = response.doctors;  // <- access the array
         const contentDiv = document.getElementById("content");
         contentDiv.innerHTML = ""; 
 
         if (!doctors || doctors.length === 0) {
             contentDiv.innerHTML = "<p>No doctors found.</p>";
+        } else {
+            doctors.forEach(doctor => {
+                const card = createDoctorCard(doctor);
+                contentDiv.appendChild(card);
+            });
         }
-        
-        doctors.forEach(doctor => {
-            const card = createDoctorCard(doctor);
-            contentDiv.appendChild(card);
-        });
     } catch (error) {
         console.error("Error loading doctors:", error);
     }
 }
+
 
 document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
 document.getElementById("sortByTime").addEventListener("change", filterDoctorsOnChange); 

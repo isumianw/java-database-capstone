@@ -43,7 +43,7 @@ public class Doctor {
     @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone must be 10–15 digits")
     private String phone;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> availableTimes;
 
     // Getters and Setters:
