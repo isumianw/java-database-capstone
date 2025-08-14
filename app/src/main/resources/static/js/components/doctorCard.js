@@ -1,5 +1,5 @@
-import { deleteDoctor } from "./services/doctorServices.js";
-import { getPatientData } from "./services/patientServices.js";
+import { deleteDoctor } from "/js/services/doctorServices.js";
+import { getPatientData } from "/js/services/patientServices.js";
 
 export function createDoctorCard(doctor) {
     // Main card container
