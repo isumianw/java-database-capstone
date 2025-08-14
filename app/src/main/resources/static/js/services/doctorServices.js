@@ -5,7 +5,7 @@ const DOCTOR_API = API_BASE_URL + '/doctor';
 
 export async function getDoctors() {
   try {
-    const response = await fetch(`${DOCTOR_API}/all`);
+    const response = await fetch(`${DOCTOR_API}/`);
     if (!response.ok) throw new Error("Failed to fetch doctors");
     const data = await response.json();
     return data;
