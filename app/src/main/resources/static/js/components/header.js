@@ -2,7 +2,6 @@ function renderHeader() {
     const headerDiv = document.getElementById("header");
     if (!headerDiv) return;
 
-    // Clear session on homepage
     if (window.location.pathname.endsWith("/")) {
         localStorage.removeItem("userRole");
         localStorage.removeItem("token");
@@ -11,7 +10,6 @@ function renderHeader() {
     const role = localStorage.getItem("userRole");
     const token = localStorage.getItem("token");
 
-    // Handle expired session
     if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
         localStorage.removeItem("userRole");
         alert("Session expired or invalid login. Please log in again.");
@@ -19,35 +17,42 @@ function renderHeader() {
         return;
     }
 
-    let headerContent = "";
+    let navLinks = "";
 
     if (role === "admin") {
-        headerContent += `
+        navLinks = `
             <button id="addDocBtn" class="adminBtn">Add Doctor</button>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "doctor") {
-        headerContent += `
+        navLinks = `
             <a href="/doctorDashboard.html">Home</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "loggedPatient") {
-        headerContent += `
+        navLinks = `
             <a href="/patientDashboard.html">Home</a>
             <a href="/appointments.html">Appointments</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "patient") {
-        // MODAL-based buttons
-        headerContent += `
+        navLinks = `
             <a href="#" id="loginModalBtn">Login</a>
             <a href="#" id="signupModalBtn">Sign Up</a>
         `;
     }
 
-    headerDiv.innerHTML = headerContent;
+    // Inject full header structure
+    headerDiv.innerHTML = `
+        <header class="header">
+            <a href="/" class="logo-link">
+                <img src="/assets/images/logo/logo.png" class="logo-img" alt="Logo">
+                <span class="logo-title">Clinic Management System</span>
+            </a>
+            <nav>${navLinks}</nav>
+        </header>
+    `;
 
-    // listeners
     attachHeaderButtonListeners();
 
     function attachHeaderButtonListeners() {
@@ -57,7 +62,6 @@ function renderHeader() {
         const addDocBtn = document.getElementById("addDocBtn");
         if (addDocBtn) addDocBtn.addEventListener("click", () => openModal("addDoctor"));
 
-        // Modal triggers for unauthenticated patient
         const loginBtn = document.getElementById("loginModalBtn");
         if (loginBtn) loginBtn.addEventListener("click", () => openModal("patientLogin"));
 
