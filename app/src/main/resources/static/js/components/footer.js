@@ -32,5 +32,4 @@ function renderFooter() {
         </footer>
     `;
 }
-
 renderFooter();
