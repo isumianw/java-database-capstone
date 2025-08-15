@@ -40,11 +40,10 @@ async function deleteDoctor(id, token) {
 // Add a new doctor
 async function saveDoctor(doctor, token) {
   try {
-    const response = await fetch(`${DOCTOR_API}/add`, {
+    const response = await fetch(`${DOCTOR_API}/${token}`, { 
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(doctor)
     });
@@ -61,24 +60,24 @@ async function saveDoctor(doctor, token) {
   }
 }
 
+  
 // Filter doctors
 async function filterDoctors(name, time, specialty) {
-  try {
     const params = new URLSearchParams();
     if (name) params.append("name", name);
     if (time) params.append("time", time);
     if (specialty) params.append("specialty", specialty);
 
-    const response = await fetch(`${DOCTOR_API}/filter?${params.toString()}`);
+    try {
+        const response = await fetch(`${DOCTOR_API}/filter?${params.toString()}`);
+        if (!response.ok) throw new Error("Failed to fetch filtered doctors");
 
-    if (!response.ok) throw new Error("Failed to fetch filtered doctors");
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error filtering doctors:", error);
-    return [];
-  }
+        const data = await response.json();
+        return data.doctors || Object.values(data) || [];
+    } catch (error) {
+        console.error("Error filtering doctors:", error);
+        return [];
+    }
 }
 
 window.getDoctors = getDoctors;

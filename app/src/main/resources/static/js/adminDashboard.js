@@ -1,10 +1,5 @@
 // adminDashboard.js
 
-// Add Doctor button opens modal
-document.getElementById('addDocBtn').addEventListener('click', () => {
-    openModal('addDoctor');
-});
-
 // Load doctor cards on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
     loadDoctorCards();
@@ -35,6 +30,11 @@ async function loadDoctorCards() {
 document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
 document.getElementById("sortByTime").addEventListener("change", filterDoctorsOnChange); 
 document.getElementById("filterBySpecialty").addEventListener("change", filterDoctorsOnChange);
+// Search button click
+document.getElementById("searchBtn").addEventListener("click", () => {
+    filterDoctorsOnChange(); 
+});
+
 
 async function filterDoctorsOnChange() {
     const searchValue = document.getElementById("searchBar").value;
@@ -69,39 +69,50 @@ function renderDoctorCards(doctors) {
 async function adminAddDoctor(event) {
     event.preventDefault();
 
-    const name = document.getElementById("doctorName").value;
-    const specialty = document.getElementById("specialization").value;
-    const email = document.getElementById("doctorEmail").value;
-    const password = document.getElementById("doctorPassword").value;
-    const mobile = document.getElementById("doctorPhone").value;
+    // Get input values and trim whitespace
+    const name = document.getElementById("doctorName").value.trim();
+    const specialty = document.getElementById("specialization").value.trim();
+    const email = document.getElementById("doctorEmail").value.trim();
+    const password = document.getElementById("doctorPassword").value.trim();
+    const phone = document.getElementById("doctorPhone").value.trim(); // match backend field
 
-    const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked'))
-        .map(cb => cb.value);
-    
+    // Get selected availability times
+    const availableTimes = Array.from(
+        document.querySelectorAll('input[name="availability"]:checked')
+    ).map(cb => cb.value);
+
+    // Get admin token
     const token = localStorage.getItem("token");
-
     if (!token) {
         alert("Login required to add doctor.");
         return;
     }
 
-    const doctorData = { name, specialty, email, password, mobile, availability };
+    // Build doctor object to match backend entity
+    const doctorData = {
+        name,
+        email,
+        password,
+        phone,
+        specialty,
+        availableTimes
+    };
 
     try {
-        const result = await saveDoctor(doctorData, token); // global
-        
+        const result = await saveDoctor(doctorData, token); // saveDoctor in doctorServices.js
         if (result.success) {
             alert("Doctor added successfully!");
             loadDoctorCards(); // refresh doctor list
             const form = document.getElementById("addDoctorForm");
             if (form) form.reset(); // clear form
         } else {
-            alert("Failed to add doctor.");
+            alert(`Failed to add doctor: ${result.message}`);
         }
     } catch (error) {
         console.error("Error adding doctor:", error);
         alert("An error occurred while adding the doctor.");
     }
 }
+
 
 window.adminAddDoctor = adminAddDoctor;
