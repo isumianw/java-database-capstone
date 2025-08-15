@@ -1,82 +1,87 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Dashboard</title>
-        <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
 
-        <!-- CSS -->
-        <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
-        <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 
-        <!-- JS Utilities -->
-        <script type="module" th:src="@{/js/render.js}" defer></script>
-        <script th:src="@{/js/util.js}" defer></script>
+    <!-- JS Utilities -->
+    <script th:src="@{/js/util.js}" defer></script>
+    <script th:src="@{/js/config/config.js}" defer></script>
 
-        <!-- JS Components -->
-        <script th:src="@{/js/components/header.js}" defer></script>
-        <script th:src="@{/js/components/footer.js}" defer></script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="wrapper">
-                <!-- Header Placeholder -->
-                <div id="header"></div>
+    <!-- Services -->
+    <script th:src="@{/js/services/doctorServices.js}" defer></script>
+    <script th:src="@{/js/services/patientServices.js}" defer></script>
 
-                <!-- Main Content -->
-                <main class="main-content">
-                    <!-- Search Bar -->
-                    <input type="text" id="searchBar" placeholder="Search by doctor name" />
+    <!-- Components -->
+    <script th:src="@{/js/components/modals.js}" defer></script>
+    <script th:src="@{/js/components/header.js}" defer></script>
+    <script th:src="@{/js/components/footer.js}" defer></script>
+    <script th:src="@{/js/components/doctorCard.js}" defer></script>
 
-                    <!-- Add Doctor Button -->
-                    <button id="addDocBtn">Add Doctor</button>
+    <!-- Admin Dashboard Script -->
+    <script th:src="@{/js/adminDashboard.js}" defer></script>
 
-                    <!-- Filter Section -->
-                    <div class="filters">
-                        <select id="sortByTime">
-                            <option value="">Sort by Time</option>
-                            <option value="asc">Ascending</option>
-                            <option value="desc">Descending</option>
-                        </select>
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <!-- Header Placeholder -->
+            <div id="header"></div>
 
-                        <select id="filterBySpecialty">
-                            <option value="">Filter by Specialty</option>
-                            <option value="Cardiologist">Cardiologist</option>
-                            <option value="Dermatologist">Dermatologist</option>
-                            <option value="Neurologist">Neurologist</option>
-                            <option value="Pediatrician">Pediatrician</option>
-                            <option value="Orthopedic">Orthopedic</option>
-                            <option value="Gynecologist">Gynecologist</option>
-                            <option value="Psychiatrist">Psychiatrist</option>
-                            <option value="Dentist">Dentist</option>
-                            <option value="Ophthalmologist">Ophthalmologist</option>
-                            <option value="Ent">ENT Specialist</option>
-                            <option value="Urologist">Urologist</option>
-                            <option value="Oncologist">Oncologist</option>
-                            <option value="Gastroenterologist">Gastroenterologist</option>
-                            <option value="General">General Physician</option>
-                        </select>
-                    </div>
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Search Bar -->
+                <input type="text" id="searchBar" placeholder="Search by doctor name" />
 
-                    <!-- Doctor List Container -->
-                    <div id="content" class="doctor-list"></div>
-                </main>
+                <!-- Add Doctor Button -->
+                <button id="addDocBtn">Add Doctor</button>
 
-                <!-- Footer Placeholder -->
-                <div id="footer"></div>
-            </div>
+                <!-- Filter Section -->
+                <div class="filters">
+                    <select id="sortByTime">
+                        <option value="">Sort by Time</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+
+                    <select id="filterBySpecialty">
+                        <option value="">Filter by Specialty</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Orthopedic">Orthopedic</option>
+                        <option value="Gynecologist">Gynecologist</option>
+                        <option value="Psychiatrist">Psychiatrist</option>
+                        <option value="Dentist">Dentist</option>
+                        <option value="Ophthalmologist">Ophthalmologist</option>
+                        <option value="Ent">ENT Specialist</option>
+                        <option value="Urologist">Urologist</option>
+                        <option value="Oncologist">Oncologist</option>
+                        <option value="Gastroenterologist">Gastroenterologist</option>
+                        <option value="General">General Physician</option>
+                    </select>
+                </div>
+
+                <!-- Doctor List Container -->
+                <div id="content" class="doctor-list"></div>
+            </main>
+
+            <!-- Footer Placeholder -->
+            <div id="footer"></div>
         </div>
+    </div>
 
-        <!-- Modal for Adding Doctor -->
-        <div id="modal" class="modal" style="display: none;">
-            <span id="closeModal" class="close">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-
-        <!-- Admin Dashboard Services -->
-        <script type="module" src="/js/adminDashboard.js" defer></script>
-        <script type="module" src="/js/components/doctorCard.js" defer></script>
-        <script type="module" src="/js/services/patientServices.js" defer></script>
-    </body>
+    <!-- Modal for Adding Doctor -->
+    <div id="modal" class="modal" style="display: none;">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</body>
 </html>

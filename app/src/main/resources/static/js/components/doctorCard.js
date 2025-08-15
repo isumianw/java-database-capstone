@@ -1,7 +1,6 @@
-import { deleteDoctor } from "/js/services/doctorServices.js";
-import { getPatientData } from "/js/services/patientServices.js";
+// doctorCard.js
 
-export function createDoctorCard(doctor) {
+function createDoctorCard(doctor) {
     // Main card container
     const card = document.createElement("div");
     card.classList.add("doctor-card");
@@ -34,13 +33,13 @@ export function createDoctorCard(doctor) {
     if (role === "admin") {
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "Delete";
-        removeBtn.addEventListener("click",  async () => {
+        removeBtn.addEventListener("click", async () => {
             const confirmed = confirm(`Are you sure you want to delete Dr. ${doctor.name}?`);
             if (!confirmed) return;
 
             const token = localStorage.getItem("token");
             try {
-                await deleteDoctor(doctor.id, token);
+                await deleteDoctor(doctor.id, token); 
                 card.remove();
             } catch (error) {
                 console.error("Failed to delete doctor:", error);
@@ -61,7 +60,7 @@ export function createDoctorCard(doctor) {
         bookNow.addEventListener("click", async (e) => {
             const token = localStorage.getItem("token");
             try {
-                const patientData = await getPatientData(token);
+                const patientData = await getPatientData(token); 
                 showBookingOverlay(e, doctor, patientData);
             } catch (error) {
                 console.error("Booking failed:", error);
@@ -76,3 +75,6 @@ export function createDoctorCard(doctor) {
 
     return card;
 }
+
+
+window.createDoctorCard = createDoctorCard;
