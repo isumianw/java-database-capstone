@@ -1,3 +1,5 @@
+// header.js
+
 function renderHeader() {
     const headerDiv = document.getElementById("header");
     if (!headerDiv) return;
@@ -75,5 +77,7 @@ function renderHeader() {
         window.location.href = "/";
     }
 }
+
+window.renderHeader = renderHeader;
 
 window.addEventListener("DOMContentLoaded", renderHeader);

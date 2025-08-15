@@ -1,10 +1,6 @@
-import { openModal } from "../components/modals.js";
-import { API_BASE_URL } from "../config/config.js";
-import { selectRole } from "/js/render.js"
-
 const ADMIN_API = API_BASE_URL + '/admin';
 const DOCTOR_API = API_BASE_URL + '/doctor/login';
-const PATIENT_API = API_BASE_URL + '/patient/login'
+const PATIENT_API = API_BASE_URL + '/patient/login';
 
 window.onload = function () {
     const adminBtn = document.getElementById('admin-btn');
@@ -55,7 +51,7 @@ window.onload = function () {
             console.error("Admin login error:", error);
             alert("Something went wrong. Please try again.");
         }
-    }
+    };
 
     window.doctorLoginHandler = async function () {
         const email = document.getElementById("email").value;
@@ -83,7 +79,7 @@ window.onload = function () {
             console.error("Doctor login error:", error);
             alert("Something went wrong. Please try again.");
         }
-    }
+    };
 
     window.patientLoginHandler = async function () {
         const email = document.getElementById("email").value;
@@ -111,5 +107,5 @@ window.onload = function () {
             console.error("Patient login error:", error);
             alert("Something went wrong. Please try again.");
         }
-    }
-}
+    };
+};
