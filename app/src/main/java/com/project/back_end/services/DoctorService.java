@@ -58,15 +58,16 @@ public class DoctorService {
 
     public int saveDoctor(Doctor doctor) {
         if (doctorRepository.findByEmail(doctor.getEmail()) != null) {
-            return -1; // Doctor already exists
+            return 0; // Doctor already exists
         }
         try {
             doctorRepository.save(doctor);
             return 1;
         } catch (Exception e) {
-            return 0;
+            return -1; // Some internal error
         }
     }
+    
 
     public int updateDoctor(Doctor doctor) {
         Optional<Doctor> existing = doctorRepository.findById(doctor.getId());

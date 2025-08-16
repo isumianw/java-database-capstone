@@ -18,7 +18,7 @@ async function getDoctors() {
 // Delete a doctor by ID
 async function deleteDoctor(id, token) {
   try {
-    const response = await fetch(`${DOCTOR_API}/${id}`, {
+    const response = await fetch(`${DOCTOR_API}/${id}/${token}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`

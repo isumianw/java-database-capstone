@@ -63,16 +63,60 @@ public class CommonService {
     }
 
     public Map<String, Object> filterDoctor(String name, String specialty, String time) {
-        if ((name == null || name.isEmpty()) &&
-            (specialty == null || specialty.isEmpty()) &&
-            (time == null || time.isEmpty())) {
-                // No filter provided, return all doctors
-                return doctorService.getDoctors();
+        // Normalize inputs
+        if (name == null) name = "";
+        else name = name.trim();
+    
+        if (specialty == null) specialty = "";
+        else specialty = specialty.trim();
+    
+        if (time == null) time = "";
+        else time = time.trim();
+    
+        // All filters empty → return all doctors
+        if (name.isEmpty() && specialty.isEmpty() && time.isEmpty()) {
+            return doctorService.getDoctors();
         }
-
-        return doctorService.filterDoctorsByNameSpecilityandTime(name, specialty, time);
+    
+        // Name + Specialty + Time
+        if (!name.isEmpty() && !specialty.isEmpty() && !time.isEmpty()) {
+            return doctorService.filterDoctorsByNameSpecilityandTime(name, specialty, time);
+        }
+    
+        // Name + Specialty
+        if (!name.isEmpty() && !specialty.isEmpty()) {
+            return doctorService.filterDoctorByNameAndSpecility(name, specialty);
+        }
+    
+        // Name + Time
+        if (!name.isEmpty() && !time.isEmpty()) {
+            return doctorService.filterDoctorByNameAndTime(name, time);
+        }
+    
+        // Specialty + Time
+        if (!specialty.isEmpty() && !time.isEmpty()) {
+            return doctorService.filterDoctorByTimeAndSpecility(specialty, time);
+        }
+    
+        // Name only
+        if (!name.isEmpty()) {
+            return doctorService.filterDoctorByNameAndTime(name, ""); // empty time
+        }
+    
+        // Specialty only
+        if (!specialty.isEmpty()) {
+            return doctorService.filterDoctorBySpecility(specialty);
+        }
+    
+        // Time only
+        if (!time.isEmpty()) {
+            return doctorService.filterDoctorsByTime(time);
+        }
+    
+        // Fallback (should never hit)
+        return doctorService.getDoctors();
     }
-
+    
     public int validateAppointment(Appointment appointment) {
         Optional<Doctor> doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
 
