@@ -46,9 +46,10 @@ async function loadAppointments() {
         }
 
         appointments.forEach((appointment) => {
-            const row = window.createPatientRow(appointment); 
+            const row = window.createPatientRecordRow(appointment); 
             appointmentTableBody.appendChild(row);
         });
+        
     } catch (error) {
         console.error(error);
         appointmentTableBody.innerHTML = `

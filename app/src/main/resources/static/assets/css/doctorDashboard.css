@@ -23,7 +23,7 @@ body, html {
 
 #searchBar {
     width: 100%;
-    max-width: 400
+    max-width: 400px; 
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -55,41 +55,51 @@ body, html {
 #patientTable {
     width: 100%;
     border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 #patientTable thead {
-    background-color: rgba(0, 0, 0, 0, 0.6);
-    color: #000000;
+    background-color: #223e84;
+    color: #ffffff;
 }
 
 #patientTable th,
 #patientTable td {
     padding: 12px;
-    border: 1px solid #000000;
+    border: 1px solid #ddd;
     text-align: left;
 }
 
 #patientTable tbody tr:nth-child(even) {
-    background-color: #000000;
+    background-color: #f4f7fb;
 }
 
 #patientTable tbody tr:hover {
-    background-color: #000000;
+    background-color: #cde0ff; 
 }
 
+
 .prescription-btn {
-    padding: 8px 12px;
-    background-color: #223e84;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background-color: transparent;
     border: none;
-    color: white;
-    border-radius: 6px;
     cursor: pointer;
     transition: transform 0.2s, filter 0.2s;
 }
 
-.prescription-btn:hover {
-    transform: scale(1.05);
-    filter: brightness(110%);
+.prescription-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.prescription-btn:hover img {
+    transform: scale(1.1);
+    filter: brightness(120%);
 }
 
 .noPatientRecord {

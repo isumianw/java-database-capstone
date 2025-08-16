@@ -73,8 +73,10 @@ public class AppointmentService {
 
     @Transactional
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
+        
         String doctorEmail = tokenService.extractEmail(token);
 
+        
         var doctor = doctorRepository.findByEmail(doctorEmail);
         if (doctor == null) {
             throw new RuntimeException("Doctor not found for email: " + doctorEmail);
@@ -86,18 +88,20 @@ public class AppointmentService {
                 date.atStartOfDay(), 
                 date.plusDays(1).atStartOfDay()
             );
-        
-        // filter by patient name
-        if (pname != null && !pname.isEmpty()) {
+
+        if (pname != null && !pname.trim().isEmpty()) {
+            String searchName = pname.toLowerCase().trim();
             appointments = appointments.stream()
-                .filter(a -> a.getPatient().getName().toLowerCase().contains(pname.toLowerCase()))
+                .filter(a -> a.getPatient() != null &&
+                            a.getPatient().getName() != null &&
+                            a.getPatient().getName().toLowerCase().trim().contains(searchName))
                 .toList();
         }
-
         Map<String, Object> result = new HashMap<>();
         result.put("appointments", appointments);
         return result;
     }
+
 
     @Transactional
     public void changeStatus(Long appointmentId, int newStatus) {

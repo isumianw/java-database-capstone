@@ -23,10 +23,11 @@ public class AppointmentController {
         this.service = service;
     }
 
-    @GetMapping("/{date}/{patientName}/{token}")
-    public ResponseEntity<?> getAppointments(@PathVariable String patientName,
-                                            @PathVariable LocalDate date,
-                                            @PathVariable String token) {
+    @GetMapping("/{date}/{token}")
+    public ResponseEntity<?> getAppointments(
+            @PathVariable("date") LocalDate date,
+            @PathVariable("token") String token,
+            @RequestParam(value = "patientName", required = false) String patientName)  {
 
         var tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getBody().get("message").equals("Token is valid")) {

@@ -4,13 +4,22 @@ const APPOINTMENT_API = `${window.API_BASE_URL}/appointments`;
 
 // This is for the doctor to get all the patient Appointments
 async function getAllAppointments(date, patientName, token) {
-  const response = await fetch(`${APPOINTMENT_API}/${date}/${patientName}/${token}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch appointments");
+    // base URL with date + token in path
+    let url = `${APPOINTMENT_API}/${date}/${token}`;
+  
+    // add patientName as query parameter only if provided
+    if (patientName && patientName.trim() !== "") {
+      url += `?patientName=${encodeURIComponent(patientName)}`;
+    }
+  
+    const response = await fetch(url, { method: "GET" });
+    if (!response.ok) {
+      throw new Error("Failed to fetch appointments");
+    }
+  
+    return await response.json();
   }
-  return await response.json();
-}
-
+    
 async function bookAppointment(appointment, token) {
   try {
     const response = await fetch(`${APPOINTMENT_API}/${token}`, {
