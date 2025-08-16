@@ -1,19 +1,17 @@
 // appointmentRecordService.js
-import { API_BASE_URL } from "../config/config.js";
-const APPOINTMENT_API = `${API_BASE_URL}/appointments`;
 
+const APPOINTMENT_API = `${window.API_BASE_URL}/appointments`;
 
-//This is for the doctor to get all the patient Appointments
-export async function getAllAppointments(date, patientName, token) {
+// This is for the doctor to get all the patient Appointments
+async function getAllAppointments(date, patientName, token) {
   const response = await fetch(`${APPOINTMENT_API}/${date}/${patientName}/${token}`);
   if (!response.ok) {
     throw new Error("Failed to fetch appointments");
   }
-
   return await response.json();
 }
 
-export async function bookAppointment(appointment, token) {
+async function bookAppointment(appointment, token) {
   try {
     const response = await fetch(`${APPOINTMENT_API}/${token}`, {
       method: "POST",
@@ -37,7 +35,7 @@ export async function bookAppointment(appointment, token) {
   }
 }
 
-export async function updateAppointment(appointment, token) {
+async function updateAppointment(appointment, token) {
   try {
     const response = await fetch(`${APPOINTMENT_API}/${token}`, {
       method: "PUT",
@@ -53,10 +51,15 @@ export async function updateAppointment(appointment, token) {
       message: data.message || "Something went wrong"
     };
   } catch (error) {
-    console.error("Error while booking appointment:", error);
+    console.error("Error while updating appointment:", error);
     return {
       success: false,
       message: "Network error. Please try again later."
     };
   }
 }
+
+
+window.getAllAppointments = getAllAppointments;
+window.bookAppointment = bookAppointment;
+window.updateAppointment = updateAppointment;

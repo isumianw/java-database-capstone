@@ -1,5 +1,4 @@
-import { getAllAppointments } from './services/appointmentRecordService.js';
-import { createPatientRow } from './components/patientRows.js';
+// doctorDashboard.js
 
 const appointmentTableBody = document.querySelector('#patientTableBody');
 let selectedDate = new Date().toISOString().split('T')[0]; // today's date
@@ -9,9 +8,11 @@ let patientName = null; // for search filter
 const searchBar = document.querySelector('#searchBar');
 searchBar.addEventListener('input', () => {
     const inputValue = searchBar.value.trim();
-    patientName = inputValue === '' ? 'null' : inputValue;
-    loadAppointments(); // refresh list with filter
+    // if input is empty, use empty string
+    patientName = inputValue === '' ? '' : inputValue; 
+    loadAppointments();
 });
+
 
 const todayButton = document.querySelector('#todayAppointmentsBtn');
 todayButton.addEventListener('click', () => {
@@ -20,7 +21,7 @@ todayButton.addEventListener('click', () => {
     loadAppointments();
 });
 
-const datePicker = document.querySelector('#appointmentDate')
+const datePicker = document.querySelector('#appointmentDate');
 datePicker.addEventListener('change', () => {
     selectedDate = datePicker.value;
     loadAppointments();
@@ -28,10 +29,14 @@ datePicker.addEventListener('change', () => {
 
 async function loadAppointments() {
     try {
-        const appointments = await getAllAppointments(selectedDate, patientName, token);
+        const res = await window.getAllAppointments(selectedDate, patientName, token);
+
+        // Ensure appointments is always an array
+        const appointments = Array.isArray(res) ? res : (res.appointments || []);
+
         appointmentTableBody.innerHTML = ''; // clear old data
 
-        if (!appointments || appointments.length === 0) {
+        if (appointments.length === 0) {
             appointmentTableBody.innerHTML = `
                 <tr>
                     <td colspan="5">No Appointments found for today.</td>
@@ -41,7 +46,7 @@ async function loadAppointments() {
         }
 
         appointments.forEach((appointment) => {
-            const row = createPatientRow(appointment);
+            const row = window.createPatientRow(appointment); 
             appointmentTableBody.appendChild(row);
         });
     } catch (error) {
@@ -54,8 +59,9 @@ async function loadAppointments() {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
-    renderContent();
+    if (typeof renderContent === 'function') renderContent();
 
     document.querySelector('#appointmentDate').value = selectedDate;
     loadAppointments();
