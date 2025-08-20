@@ -40,8 +40,14 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.getAppointment(patientName, date, token));
     }
 
-    @PostMapping("/{token}")
-    public ResponseEntity<?> bookAppointment(@PathVariable String token, @RequestBody Appointment appointment) {
+    @PostMapping("/book")
+    public ResponseEntity<?> bookAppointment(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Appointment appointment) {
+
+        // Remove "Bearer " prefix if you send it that way
+        if (token.startsWith("Bearer ")) token = token.substring(7);
+
         var tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getBody().get("message").equals("Token is valid")) {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));

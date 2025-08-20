@@ -80,6 +80,7 @@ window.showBookingOverlay = function (e, doctor, patient) {
       status: 0
     };
 
+  
     const { success, message } = await bookAppointment(appointment, token);
 
     if (success) {

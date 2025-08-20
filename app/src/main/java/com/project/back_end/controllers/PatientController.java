@@ -23,15 +23,17 @@ public class PatientController {
         this.service = service;
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<?> getPatientDetails(@PathVariable String token) {
+    @GetMapping("/me")
+    public ResponseEntity<?> getPatientDetails(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
         var tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getBody().get("message").equals("Token is valid")) {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
         var patientDetails = patientService.getPatientDetails(token);
-        return ResponseEntity.ok(patientDetails);
+        return ResponseEntity.ok(Map.of("patient", patientDetails));
     }
+
 
     @PostMapping()
     public ResponseEntity<Map<String, String>> createPatient(@RequestBody Patient patient) {

@@ -1,7 +1,5 @@
 // patientDashboard.js 
 
-const PATIENT_API = API_BASE_URL + '/patient/login';
-
 document.addEventListener("DOMContentLoaded", () => {
     loadDoctorCards();
   
@@ -124,34 +122,5 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error :: loginPatient :: ", error);
     }
   };
-
-  window.patientLoginHandler = async function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const patient = { email, password };
-
-    try {
-        const response = await fetch(PATIENT_API, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(patient),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("userRole", "loggedPatient");
-            localStorage.setItem("patient", JSON.stringify(data.patient)); 
-
-            window.location.href = "/pages/loggedPatientDashboard.html";
-        } else {
-            alert("Invalid credentials!");
-        }
-    } catch (error) {
-        console.error("Patient login error:", error);
-        alert("Something went wrong. Please try again.");
-    }
-};
 
   

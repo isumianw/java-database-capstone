@@ -59,8 +59,21 @@ function createDoctorCard(doctor) {
         bookNow.textContent = "Book Now";
         bookNow.addEventListener("click", async (e) => {
             const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You are not logged in. Please log in first.");
+                return;
+            }
+    
             try {
-                const patientData = await getPatientData(token); 
+                const patientData = await getPatientData(token);
+                
+                if (!patientData) {
+                    alert("Failed to load patient details. Please log in again.");
+                    console.error("getPatientData returned null or undefined. Token:", token);
+                    return;
+                }
+    
+                console.log("Patient Data:", patientData); // Debug info
                 showBookingOverlay(e, doctor, patientData);
             } catch (error) {
                 console.error("Booking failed:", error);
@@ -69,7 +82,7 @@ function createDoctorCard(doctor) {
         });
         actionsDiv.appendChild(bookNow);
     }
-
+    
     card.appendChild(infoDiv);
     card.appendChild(actionsDiv);
 

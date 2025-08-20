@@ -1,6 +1,5 @@
 const ADMIN_API = API_BASE_URL + '/admin';
 const DOCTOR_API = API_BASE_URL + '/doctor/login';
-const PATIENT_API = API_BASE_URL + '/patient/login';
 
 window.onload = function () {
     const adminBtn = document.getElementById('admin-btn');
