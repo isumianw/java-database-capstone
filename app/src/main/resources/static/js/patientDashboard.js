@@ -1,5 +1,7 @@
 // patientDashboard.js 
 
+const PATIENT_API = API_BASE_URL + '/patient/login';
+
 document.addEventListener("DOMContentLoaded", () => {
     loadDoctorCards();
   
@@ -54,24 +56,28 @@ document.addEventListener("DOMContentLoaded", () => {
   
     filterDoctors(name, time, specialty)
       .then(response => {
-        const doctors = response.doctors;
+        // Ensure we always have an array
+        const doctors = (response && response.doctors) || response || [];
+  
         const contentDiv = document.getElementById("content");
         contentDiv.innerHTML = "";
   
-        if (doctors.length > 0) {
+        if (Array.isArray(doctors) && doctors.length > 0) {
           doctors.forEach(doctor => {
             const card = createDoctorCard(doctor);
             contentDiv.appendChild(card);
           });
         } else {
           contentDiv.innerHTML = "<p>No doctors found with the given filters.</p>";
+          console.log("Nothing found");
         }
       })
       .catch(error => {
         console.error("Failed to filter doctors:", error);
-        alert("An error occurred while filtering doctors.");
+        alert("❌ An error occurred while filtering doctors.");
       });
   }
+  
   
   window.signupPatient = async function () {
     try {
@@ -118,4 +124,32 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error :: loginPatient :: ", error);
     }
   };
+
+  window.patientLoginHandler = async function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const patient = { email, password };
+
+        try {
+            const response = await fetch(PATIENT_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(patient),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("token", data.token);
+                selectRole("patient");
+            } else {
+                alert("Invalid credentials!");
+            }
+        } catch (error) {
+            console.error("Patient login error:", error);
+            alert("Something went wrong. Please try again.");
+        }
+    };
   
