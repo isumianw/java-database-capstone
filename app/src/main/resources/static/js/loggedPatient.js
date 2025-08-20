@@ -1,12 +1,12 @@
 // loggedPatient.js 
-import { getDoctors } from './services/doctorServices.js';
-import { createDoctorCard } from './components/doctorCard.js';
-import { filterDoctors } from './services/doctorServices.js';
-import { bookAppointment } from './services/appointmentRecordService.js';
-
 
 document.addEventListener("DOMContentLoaded", () => {
   loadDoctorCards();
+
+  // Filter inputs
+  document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
+  document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
+  document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
 });
 
 function loadDoctorCards() {
@@ -25,11 +25,12 @@ function loadDoctorCards() {
     });
 }
 
-export function showBookingOverlay(e, doctor, patient) {
+window.showBookingOverlay = function (e, doctor, patient) {
   const button = e.target;
   const rect = button.getBoundingClientRect();
-  console.log(patient.name)
-  console.log(patient)
+  console.log(patient.name);
+  console.log(patient);
+
   const ripple = document.createElement("div");
   ripple.classList.add("ripple-overlay");
   ripple.style.left = `${e.clientX}px`;
@@ -56,21 +57,20 @@ export function showBookingOverlay(e, doctor, patient) {
   `;
 
   document.body.appendChild(modalApp);
-
   setTimeout(() => modalApp.classList.add("active"), 600);
 
   modalApp.querySelector(".confirm-booking").addEventListener("click", async () => {
     const date = modalApp.querySelector("#appointment-date").value;
     const time = modalApp.querySelector("#appointment-time").value;
     const token = localStorage.getItem("token");
-    const startTime = time.split('-')[0];
+    const startTime = time.split("-")[0];
+
     const appointment = {
       doctor: { id: doctor.id },
       patient: { id: patient.id },
       appointmentTime: `${date}T${startTime}:00`,
       status: 0
     };
-
 
     const { success, message } = await bookAppointment(appointment, token);
 
@@ -82,22 +82,12 @@ export function showBookingOverlay(e, doctor, patient) {
       alert("❌ Failed to book an appointment :: " + message);
     }
   });
-}
-
-
-
-// Filter Input
-document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
-document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
-document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
-
-
+};
 
 function filterDoctorsOnChange() {
   const searchBar = document.getElementById("searchBar").value.trim();
   const filterTime = document.getElementById("filterTime").value;
   const filterSpecialty = document.getElementById("filterSpecialty").value;
-
 
   const name = searchBar.length > 0 ? searchBar : null;
   const time = filterTime.length > 0 ? filterTime : null;
@@ -110,14 +100,12 @@ function filterDoctorsOnChange() {
       contentDiv.innerHTML = "";
 
       if (doctors.length > 0) {
-        console.log(doctors);
         doctors.forEach(doctor => {
           const card = createDoctorCard(doctor);
           contentDiv.appendChild(card);
         });
       } else {
         contentDiv.innerHTML = "<p>No doctors found with the given filters.</p>";
-        console.log("Nothing");
       }
     })
     .catch(error => {
@@ -126,7 +114,7 @@ function filterDoctorsOnChange() {
     });
 }
 
-export function renderDoctorCards(doctors) {
+window.renderDoctorCards = function (doctors) {
   const contentDiv = document.getElementById("content");
   contentDiv.innerHTML = "";
 
@@ -134,5 +122,4 @@ export function renderDoctorCards(doctors) {
     const card = createDoctorCard(doctor);
     contentDiv.appendChild(card);
   });
-
-}
+};

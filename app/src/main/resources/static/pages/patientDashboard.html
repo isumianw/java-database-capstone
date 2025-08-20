@@ -8,11 +8,16 @@
     <link rel="stylesheet" href="../assets/css/adminDashboard.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/patientDashboard.css">
+
+    <!-- JS -->
     <script src="../js/render.js" defer></script>
     <script src="../js/util.js" defer></script>
+    <script src="../js/config/config.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
-    <script type="module" src="../js/components/modals.js"></script>
+    <script src="../js/components/modals.js" defer></script>
+    <script src="../js/services/doctorServices.js" defer></script>
+    <script src="../js/patientDashboard.js" defer></script>
 </head>
 
 <body onload="renderContent()">
@@ -56,7 +61,6 @@
             <div id="modal-body"></div>
         </div>
     </div>
-    <script type="module" src="../js/patientDashboard.js" defer></script>
 </body>
 
 </html>

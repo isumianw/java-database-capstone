@@ -1,5 +1,4 @@
-// patientAppointment.js
-import { getPatientAppointments, getPatientData, filterAppointments } from "./services/patientServices.js";
+// patientAppointment.js 
 
 const tableBody = document.getElementById("patientTableBody");
 const token = localStorage.getItem("token");
@@ -49,12 +48,16 @@ function renderAppointments(appointments) {
       <td>${appointment.doctorName}</td>
       <td>${appointment.appointmentDate}</td>
       <td>${appointment.appointmentTimeOnly}</td>
-      <td>${appointment.status == 0 ? `<img src="../assets/images/edit/edit.png" alt="Edit" class="prescription-btn" data-id="${appointment.patientId}">` : "-"}</td>
+      <td>${appointment.status == 0 
+        ? `<img src="../assets/images/edit/edit.png" alt="Edit" class="prescription-btn" data-id="${appointment.patientId}">` 
+        : "-"}</td>
     `;
 
     if (appointment.status == 0) {
       const actionBtn = tr.querySelector(".prescription-btn");
-      actionBtn?.addEventListener("click", () => redirectToUpdatePage(appointment));
+      if (actionBtn) {
+        actionBtn.addEventListener("click", () => redirectToUpdatePage(appointment));
+      }
     }
 
     tableBody.appendChild(tr);
@@ -62,7 +65,6 @@ function renderAppointments(appointments) {
 }
 
 function redirectToUpdatePage(appointment) {
-  // Prepare the query parameters
   const queryString = new URLSearchParams({
     appointmentId: appointment.id,
     patientId: appointment.patientId,
@@ -73,12 +75,10 @@ function redirectToUpdatePage(appointment) {
     appointmentTime: appointment.appointmentTimeOnly,
   }).toString();
 
-  // Redirect to the update page with the query string
   setTimeout(() => {
     window.location.href = `/pages/updateAppointment.html?${queryString}`;
   }, 100);
 }
-
 
 // Search and Filter Listeners
 document.getElementById("searchBar").addEventListener("input", handleFilterChange);
@@ -102,4 +102,3 @@ async function handleFilterChange() {
     alert("❌ An error occurred while filtering appointments.");
   }
 }
-
