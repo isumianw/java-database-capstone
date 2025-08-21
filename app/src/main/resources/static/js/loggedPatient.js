@@ -68,29 +68,40 @@ window.showBookingOverlay = function (e, doctor, patient) {
   setTimeout(() => modalApp.classList.add("active"), 600);
 
   modalApp.querySelector(".confirm-booking").addEventListener("click", async () => {
-    const date = modalApp.querySelector("#appointment-date").value;
-    const time = modalApp.querySelector("#appointment-time").value;
-    const token = localStorage.getItem("token");
-    const startTime = time.split("-")[0];
+        const date = modalApp.querySelector("#appointment-date").value; 
+        // Ensure the selected time is only HH:mm
+        const time = modalApp.querySelector("#appointment-time").value.split("-")[0].trim();
+        const token = localStorage.getItem("token");
 
-    const appointment = {
-      doctor: { id: doctor.id },
-      patient: { id: patient.id },
-      appointmentTime: `${date}T${startTime}:00`,
-      status: 0
-    };
+        if (!date || !time) {
+            alert("Please select both date and time.");
+            return;
+        }
 
-  
-    const { success, message } = await bookAppointment(appointment, token);
+        if (!doctor || !doctor.id || !patient || !patient.id) {
+            alert("Doctor or patient data is missing!");
+            return;
+        }
 
-    if (success) {
-      alert("Appointment Booked successfully");
-      ripple.remove();
-      modalApp.remove();
-    } else {
-      alert("❌ Failed to book an appointment :: " + message);
-    }
-  });
+        const appointment = {
+            doctor: { id: doctor.id },
+            patient: { id: patient.id },
+            appointmentTime: `${date}T${time}`,
+            status: 0
+        };
+        
+        console.log("Sending appointment:", appointment); // debug
+
+        const { success, message } = await bookAppointment(appointment, token);
+
+        if (success) {
+            alert("✅ Appointment booked successfully");
+            document.querySelector(".ripple-overlay")?.remove();
+            modalApp.remove();
+        } else {
+            alert("❌ Failed to book appointment: " + message);
+        }
+    });
 };
 
 function filterDoctorsOnChange() {

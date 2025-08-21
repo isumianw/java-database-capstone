@@ -1,5 +1,11 @@
 package com.project.back_end.controllers;
 
+import com.project.back_end.models.Doctor;
+import com.project.back_end.models.Patient;
+import com.project.back_end.repo.DoctorRepository;
+import com.project.back_end.repo.PatientRepository;
+import java.time.LocalDateTime;
+
 import com.project.back_end.models.Appointment;
 import com.project.back_end.services.AppointmentService;
 import com.project.back_end.services.CommonService;
@@ -16,6 +22,13 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final CommonService service;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
 
     @Autowired
     public AppointmentController(AppointmentService appointmentService, CommonService service) {
@@ -43,9 +56,8 @@ public class AppointmentController {
     @PostMapping("/book")
     public ResponseEntity<?> bookAppointment(
             @RequestHeader("Authorization") String token,
-            @RequestBody Appointment appointment) {
+            @RequestBody Map<String, Object> body) {
 
-        // Remove "Bearer " prefix if you send it that way
         if (token.startsWith("Bearer ")) token = token.substring(7);
 
         var tokenValidation = service.validateToken(token, "patient");
@@ -53,16 +65,36 @@ public class AppointmentController {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
 
-        int validation = service.validateAppointment(appointment);
-        if (validation == -1) {
-            return ResponseEntity.status(404).body(Map.of("message", "Doctor not found"));
-        } else if (validation == 0) {
-            return ResponseEntity.status(400).body(Map.of("message", "Time slot unavailable"));
-        }
+        try {
+            Long doctorId = Long.valueOf(body.get("doctor").toString().replaceAll("[^0-9]", ""));
+            Long patientId = Long.valueOf(body.get("patient").toString().replaceAll("[^0-9]", ""));
+            LocalDateTime appointmentTime = LocalDateTime.parse(body.get("appointmentTime").toString());
+            int status = Integer.parseInt(body.get("status").toString());
 
-        appointmentService.bookAppointment(appointment);
-        return ResponseEntity.status(201).body(Map.of("message", "Appointment booked successfully"));
+            Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+            Patient patient = patientRepository.findById(patientId).orElse(null);
+
+            if (doctor == null || patient == null)
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid doctor or patient"));
+
+            Appointment appointment = new Appointment();
+            appointment.setDoctor(doctor);
+            appointment.setPatient(patient);
+            appointment.setAppointmentTime(appointmentTime);
+            appointment.setStatus(status);
+
+            int validation = service.validateAppointment(appointment);
+            if (validation == -1) return ResponseEntity.status(404).body(Map.of("message", "Doctor not found"));
+            if (validation == 0) return ResponseEntity.status(400).body(Map.of("message", "Time slot unavailable"));
+
+            appointmentService.bookAppointment(appointment);
+            return ResponseEntity.status(201).body(Map.of("message", "Appointment booked successfully"));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Invalid request body"));
+        }
     }
+
 
     @PutMapping("/{token}")
     public ResponseEntity<?> updateAppointment(@PathVariable String token, @RequestBody Appointment appointment) {

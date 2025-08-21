@@ -63,7 +63,13 @@ window.getPatientData = async function(token) {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const data = await response.json();
-      if (response.ok) return data.patient;
+  
+      console.log("Raw getPatientData response:", data); 
+  
+      if (response.ok) {
+        return data.patient.body.patient;  
+      }
+  
       console.error("Failed to fetch patient details:", data);
       return null;
     } catch (error) {
@@ -71,6 +77,7 @@ window.getPatientData = async function(token) {
       return null;
     }
   };
+  
   
 // Fetch patient appointments
 window.getPatientAppointments = async function(id, token, user) {

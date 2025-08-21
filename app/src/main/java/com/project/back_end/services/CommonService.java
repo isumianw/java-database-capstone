@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.time.temporal.ChronoUnit;
+
 
 import com.project.back_end.models.*;
 import com.project.back_end.repo.*;
@@ -119,15 +121,22 @@ public class CommonService {
     
     public int validateAppointment(Appointment appointment) {
         Optional<Doctor> doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
-
+    
         if (doctorOpt.isEmpty()) {
             return -1; // doctor does not exist
         }
-
-        var availableSlots = doctorService.getDoctorAvailability(appointment.getDoctor().getId(), appointment.getAppointmentTime().toLocalDate());
-
-        var timeString = appointment.getAppointmentTime().toLocalTime().toString();
-
+    
+        var availableSlots = doctorService.getDoctorAvailability(
+            appointment.getDoctor().getId(),
+            appointment.getAppointmentTime().toLocalDate()
+        );
+    
+        // Truncate seconds to match "HH:mm" format in availableSlots
+        var timeString = appointment.getAppointmentTime()
+                                    .toLocalTime()
+                                    .truncatedTo(ChronoUnit.MINUTES)
+                                    .toString();
+    
         if (availableSlots.contains(timeString)) {
             return 1; // time slot is available
         } else {
