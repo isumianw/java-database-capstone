@@ -28,13 +28,13 @@ function renderHeader() {
         `;
     } else if (role === "doctor") {
         navLinks = `
-            <a href="/doctorDashboard.html">Home</a>
+            <a href="doctorDashboard.html">Home</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "loggedPatient") {
         navLinks = `
-            <a href="/patientDashboard.html">Home</a>
-            <a href="/appointments.html">Appointments</a>
+            <a href="patientDashboard.html">Home</a>
+            <a href="patientAppointments.html">Appointments</a>
             <a href="#" id="logoutBtn">Logout</a>
         `;
     } else if (role === "patient") {

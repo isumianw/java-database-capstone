@@ -1,10 +1,9 @@
-// patientAppointment.js 
+// patientAppointment.js
 
 const tableBody = document.getElementById("patientTableBody");
 const token = localStorage.getItem("token");
 
 let allAppointments = [];
-let filteredAppointments = [];
 let patientId = null;
 
 document.addEventListener("DOMContentLoaded", initializePage);
@@ -13,13 +12,21 @@ async function initializePage() {
   try {
     if (!token) throw new Error("No token found");
 
+    // Get patient info
     const patient = await getPatientData(token);
     if (!patient) throw new Error("Failed to fetch patient details");
 
     patientId = Number(patient.id);
 
+    // Get appointments
     const appointmentData = await getPatientAppointments(patientId, token, "patient") || [];
-    allAppointments = appointmentData.filter(app => app.patientId === patientId);
+    console.log("Appointments from backend:", appointmentData); // Debug
+
+    
+    allAppointments = appointmentData.filter(app => {
+     
+      return (app.patientId ? app.patientId === patientId : app.patient?.id === patientId);
+    });
 
     renderAppointments(allAppointments);
   } catch (error) {
@@ -32,9 +39,7 @@ function renderAppointments(appointments) {
   tableBody.innerHTML = "";
 
   const actionTh = document.querySelector("#patientTable thead tr th:last-child");
-  if (actionTh) {
-    actionTh.style.display = "table-cell"; // Always show "Actions" column
-  }
+  if (actionTh) actionTh.style.display = "table-cell";
 
   if (!appointments.length) {
     tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No Appointments Found</td></tr>`;
@@ -42,22 +47,25 @@ function renderAppointments(appointments) {
   }
 
   appointments.forEach(appointment => {
+    const patientName = appointment.patient?.name || "You";
+    const doctorName = appointment.doctor?.name || appointment.doctorName;
+    const date = appointment.appointmentDate || appointment.date;
+    const time = appointment.appointmentTimeOnly || appointment.time;
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${appointment.patientName || "You"}</td>
-      <td>${appointment.doctorName}</td>
-      <td>${appointment.appointmentDate}</td>
-      <td>${appointment.appointmentTimeOnly}</td>
+      <td>${patientName}</td>
+      <td>${doctorName}</td>
+      <td>${date}</td>
+      <td>${time}</td>
       <td>${appointment.status == 0 
-        ? `<img src="../assets/images/edit/edit.png" alt="Edit" class="prescription-btn" data-id="${appointment.patientId}">` 
+        ? `<img src="../assets/images/edit/edit.png" alt="Edit" class="prescription-btn" data-id="${appointment.patientId || appointment.patient?.id}">` 
         : "-"}</td>
     `;
 
     if (appointment.status == 0) {
       const actionBtn = tr.querySelector(".prescription-btn");
-      if (actionBtn) {
-        actionBtn.addEventListener("click", () => redirectToUpdatePage(appointment));
-      }
+      if (actionBtn) actionBtn.addEventListener("click", () => redirectToUpdatePage(appointment));
     }
 
     tableBody.appendChild(tr);
@@ -65,40 +73,27 @@ function renderAppointments(appointments) {
 }
 
 function redirectToUpdatePage(appointment) {
-  const queryString = new URLSearchParams({
-    appointmentId: appointment.id,
-    patientId: appointment.patientId,
-    patientName: appointment.patientName || "You",
-    doctorName: appointment.doctorName,
-    doctorId: appointment.doctorId,
-    appointmentDate: appointment.appointmentDate,
-    appointmentTime: appointment.appointmentTimeOnly,
-  }).toString();
+ 
+    const appointmentId = appointment.id;
+    const patientId = appointment.patient?.id || appointment.patientId;
+    const doctorId = appointment.doctor?.id || appointment.doctorId;
+    const patientName = appointment.patient?.name || "You";
+    const doctorName = appointment.doctor?.name || appointment.doctorName;
+    const appointmentDate = appointment.appointmentDate || appointment.date;
+    const appointmentTime = appointment.appointmentTimeOnly || appointment.time;
+  
 
-  setTimeout(() => {
-    window.location.href = `/pages/updateAppointment.html?${queryString}`;
-  }, 100);
-}
-
-// Search and Filter Listeners
-document.getElementById("searchBar").addEventListener("input", handleFilterChange);
-document.getElementById("appointmentFilter").addEventListener("change", handleFilterChange);
-
-async function handleFilterChange() {
-  const searchBarValue = document.getElementById("searchBar").value.trim();
-  const filterValue = document.getElementById("appointmentFilter").value;
-
-  const name = searchBarValue || null;
-  const condition = filterValue === "allAppointments" ? null : filterValue || null;
-
-  try {
-    const response = await filterAppointments(condition, name, token);
-    const appointments = response?.appointments || [];
-    filteredAppointments = appointments.filter(app => app.patientId === patientId);
-
-    renderAppointments(filteredAppointments);
-  } catch (error) {
-    console.error("Failed to filter appointments:", error);
-    alert("❌ An error occurred while filtering appointments.");
+    const queryParams = new URLSearchParams({
+      appointmentId,
+      patientId,
+      doctorId,
+      patientName,
+      doctorName,
+      appointmentDate,
+      appointmentTime
+    });
+  
+    
+    window.location.href = `../pages/updateAppointment.html?${queryParams.toString()}`;
   }
-}
+  

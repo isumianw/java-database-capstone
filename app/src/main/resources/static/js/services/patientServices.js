@@ -82,13 +82,14 @@ window.getPatientData = async function(token) {
 // Fetch patient appointments
 window.getPatientAppointments = async function(id, token, user) {
     try {
-        const response = await fetch(`${PATIENT_API}/${id}/${user}/${token}`);
+        const response = await fetch(`${PATIENT_API}/${id}/${token}`);
         const data = await response.json();
-        if (response.ok) return data.appointments;
-        return null;
+        console.log("Raw getPatientData response:", data);
+        if (response.ok) return data.body.appointments || [];  // <-- return array directly
+        return [];
     } catch (error) {
         console.error("Error fetching patient appointments:", error);
-        return null;
+        return [];
     }
 };
 

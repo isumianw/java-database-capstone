@@ -56,16 +56,34 @@ public class PatientService {
         Patient patient = patientRepository.findByEmail(email);
 
         if (patient == null || !patient.getId().equals(id)) {
+            System.out.println("Unauthorized access: patient not found or ID mismatch");
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized access"));
         }
 
-        List<AppointmentDTO> appointments = appointmentRepository.findByPatientId(id)
-            .stream()
-            .map(AppointmentDTO::fromEntity)
-            .collect(Collectors.toList());
+        // Fetch raw appointments from repository
+        List<Appointment> rawAppointments = appointmentRepository.findByPatient_Id(id);
+        System.out.println("Raw appointments from DB for patientId " + id + ": " + rawAppointments);
+
+        // Map to DTOs
+        List<AppointmentDTO> appointments = rawAppointments.stream()
+        .map(app -> {
+            System.out.println("Appointment ID: " + app.getId() +
+                            ", Doctor: " + (app.getDoctor() != null ? app.getDoctor().getName() : "null") +
+                            ", Patient: " + (app.getPatient() != null ? app.getPatient().getName() : "null") +
+                            ", Status: " + app.getStatus() +
+                            ", Time: " + app.getAppointmentTime());
+            AppointmentDTO dto = AppointmentDTO.fromEntity(app);
+            System.out.println("Mapped DTO: " + dto);
+            return dto;
+        })
+        .collect(Collectors.toList());
+
+
+        System.out.println("Final appointments list size: " + appointments.size());
 
         return ResponseEntity.ok(Map.of("appointments", appointments));
     }
+
 
     public ResponseEntity<Map<String, Object>> filterByCondition(String condition, Long patientId) {
         Map<String, Object> response = new HashMap<>();
@@ -93,7 +111,7 @@ public class PatientService {
 
     public ResponseEntity<Map<String, Object>> filterByDoctor(String name, Long patientId) {
         List<AppointmentDTO> dtos = appointmentRepository
-            .filterByDoctorNameAndPatientId(name, patientId)
+            .filterByDoctorNameAndPatient_Id(name, patientId)
             .stream()
             .map(AppointmentDTO::fromEntity)
             .collect(Collectors.toList());
@@ -115,7 +133,7 @@ public class PatientService {
         }
 
         List<Appointment> appointments = appointmentRepository
-            .filterByDoctorNameAndPatientIdAndStatus(name, patientId, status);
+            .filterByDoctorNameAndPatient_IdAndStatus(name, patientId, status);
 
         List<AppointmentDTO> appointmentDTOs = appointments.stream()
             .map(AppointmentDTO::fromEntity)

@@ -23,15 +23,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Transactional
     void deleteAllByDoctorId(Long doctorId);
 
-    List<Appointment> findByPatientId(Long patientId);
+    List<Appointment> findByPatient_Id(Long patientId);
 
     List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(Long patientId, int status);
 
     @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor d WHERE a.patient.id = :patientId AND LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%'))")
-    List<Appointment> filterByDoctorNameAndPatientId(String doctorName, Long patientId);
+    List<Appointment> filterByDoctorNameAndPatient_Id(String doctorName, Long patientId);
 
     @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor d WHERE a.patient.id = :patientId AND a.status = :status AND LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%'))")
-    List<Appointment> filterByDoctorNameAndPatientIdAndStatus(String doctorName, Long patientId, int status);
+    List<Appointment> filterByDoctorNameAndPatient_IdAndStatus(String doctorName, Long patientId, int status);
 
     List<Appointment> findByDoctorId(Long doctorId);
 

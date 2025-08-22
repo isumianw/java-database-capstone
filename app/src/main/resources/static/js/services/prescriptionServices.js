@@ -1,10 +1,10 @@
 // prescriptionServices.js
-import { API_BASE_URL } from '../config/config.js'
 
-const PRESCRITION_API = API_BASE_URL + "/prescription"
-export async function savePrescription(prescription, token) {
+const PRESCRIPTION_API = window.API_BASE_URL + "/prescription";
+
+window.savePrescription = async function(prescription, token) {
   try {
-    const response = await fetch(`${PRESCRITION_API}/${token}`, {
+    const response = await fetch(`${PRESCRIPTION_API}/${token}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json"
@@ -12,17 +12,16 @@ export async function savePrescription(prescription, token) {
       body: JSON.stringify(prescription)
     });
     const result = await response.json();
-    return { success: response.ok, message: result.message }
+    return { success: response.ok, message: result.message };
+  } catch (error) {
+    console.error("Error :: savePrescription :: ", error);
+    return { success: false, message: error.message || "Something went wrong" };
   }
-  catch (error) {
-    console.error("Error :: savePrescription :: ", error)
-    return { success: false, message: result.message }
-  }
-}
+};
 
-export async function getPrescription(appointmentId, token) {
+window.getPrescription = async function(appointmentId, token) {
   try {
-    const response = await fetch(`${PRESCRITION_API}/${appointmentId}/${token}`, {
+    const response = await fetch(`${PRESCRIPTION_API}/${appointmentId}/${token}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -36,11 +35,10 @@ export async function getPrescription(appointmentId, token) {
     }
 
     const result = await response.json();
-    console.log(result)
-    console.log(result)
-    return result; // This should be your prescription object
+    console.log("Fetched prescription:", result);
+    return result;
   } catch (error) {
     console.error("Error :: getPrescription ::", error);
     throw error;
   }
-}
+};

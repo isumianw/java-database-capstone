@@ -1,5 +1,4 @@
 <!-- updateAppointment.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,11 +10,19 @@
     <link rel="stylesheet" href="../assets/css/doctorDashboard.css">
     <link rel="stylesheet" href="../assets/css/updateAppointment.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- Scripts -->
     <script src="../js/render.js" defer></script>
     <script src="../js/util.js" defer></script>
+    <script src="../js/config/config.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
-    <script type="module" src="../js/updateAppointment.js" defer></script>
+
+    <!-- Services -->
+    <script src="../js/services/appointmentServices.js" defer></script>
+
+    <!-- Main page script -->
+    <script src="../js/updateAppointment.js" defer></script>
 </head>
 
 <body onload="renderContent()">
@@ -36,11 +43,12 @@
                         <input type="date" id="appointmentDate" required>
 
                         <label for="appointmentTime">Time</label>
-                        <select id="appointmentTime" required>
-                        </select>
+                        <select id="appointmentTime" required></select>
 
-                        <button type="submit" class="btn-primary" id="updateAppointment">Update Appointment</button>
-                        <button type="button" onclick="window.location.href='/pages/patientAppointments.html'"
+                        <button type="submit" class="btn-primary" id="updateAppointment">
+                            Update Appointment
+                        </button>
+                        <button type="button" onclick="window.location.href='../pages/patientAppointments.html'"
                             class="btn-secondary">Cancel</button>
                     </form>
                 </div>
@@ -48,7 +56,6 @@
             <div id="footer"></div>
         </div>
     </div>
-
 </body>
 
 </html>

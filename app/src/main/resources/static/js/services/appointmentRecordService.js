@@ -1,7 +1,5 @@
 // appointmentRecordService.js
 
-const APPOINTMENT_API = `${window.API_BASE_URL}/appointments`;
-
 // This is for the doctor to get all the patient Appointments
 async function getAllAppointments(date, patientName, token) {
     // base URL with date + token in path
