@@ -33,4 +33,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor d WHERE a.patient.id = :patientId AND a.status = :status AND LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%'))")
     List<Appointment> filterByDoctorNameAndPatientIdAndStatus(String doctorName, Long patientId, int status);
 
+    List<Appointment> findByDoctorId(Long doctorId);
+
+
 }

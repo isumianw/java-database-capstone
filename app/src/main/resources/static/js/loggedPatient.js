@@ -84,13 +84,14 @@ window.showBookingOverlay = function (e, doctor, patient) {
         }
 
         const appointment = {
-            doctor: { id: doctor.id },
-            patient: { id: patient.id },
-            appointmentTime: `${date}T${time}`,
+            doctor: doctor.id,       
+            patient: patient.id,    
+            appointmentTime: `${date}T${time}:00`,
             status: 0
         };
         
-        console.log("Sending appointment:", appointment); // debug
+        
+        console.log("Sending appointment:", appointment); 
 
         const { success, message } = await bookAppointment(appointment, token);
 
@@ -115,7 +116,7 @@ function filterDoctorsOnChange() {
   
     filterDoctors(name, time, specialty)
       .then(response => {
-        // Ensure we always have an array
+        
         const doctors = (response && response.doctors) || response || [];
   
         const contentDiv = document.getElementById("content");

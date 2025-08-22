@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.time.temporal.ChronoUnit;
-
+import java.time.format.DateTimeFormatter;
 
 import com.project.back_end.models.*;
 import com.project.back_end.repo.*;
@@ -20,6 +20,7 @@ public class CommonService {
     private final AdminRepository adminRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
+    private final AppointmentRepository appointmentRepository;
     private final DoctorService doctorService;
     private final PatientService patientService;
 
@@ -27,12 +28,14 @@ public class CommonService {
                     AdminRepository adminRepository,
                     DoctorRepository doctorRepository,
                     PatientRepository patientRepository,
+                    AppointmentRepository appointmentRepository,
                     DoctorService doctorService,
                     PatientService patientService) {
         this.tokenService = tokenService;
         this.adminRepository = adminRepository;
         this.doctorRepository = doctorRepository;
         this.patientRepository = patientRepository;
+        this.appointmentRepository = appointmentRepository;
         this.doctorService = doctorService;
         this.patientService = patientService;
     }
@@ -123,27 +126,39 @@ public class CommonService {
         Optional<Doctor> doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
     
         if (doctorOpt.isEmpty()) {
+            System.out.println("Doctor not found: " + appointment.getDoctor().getId());
             return -1; // doctor does not exist
         }
     
+        // Get available slots for the doctor on that date
         var availableSlots = doctorService.getDoctorAvailability(
             appointment.getDoctor().getId(),
             appointment.getAppointmentTime().toLocalDate()
         );
+        System.out.println("Available slots for doctor " + appointment.getDoctor().getId()
+            + " on " + appointment.getAppointmentTime().toLocalDate() + ": " + availableSlots);
     
-        // Truncate seconds to match "HH:mm" format in availableSlots
+        // Truncate to minutes and format as HH:mm with AM/PM
         var timeString = appointment.getAppointmentTime()
-                                    .toLocalTime()
-                                    .truncatedTo(ChronoUnit.MINUTES)
-                                    .toString();
+                            .toLocalTime()
+                            .truncatedTo(ChronoUnit.MINUTES)
+                            .format(DateTimeFormatter.ofPattern("hh:mm a"));
+        System.out.println("Requested appointment time (HH:mm): " + timeString);
     
+        // Log existing appointments for this doctor on that date
+        var existingAppointments = appointmentRepository.findByDoctorId(appointment.getDoctor().getId());
+        System.out.println("Existing appointments for doctor " + appointment.getDoctor().getId() + ": " + existingAppointments);
+    
+        // Check if the requested time is in available slots
         if (availableSlots.contains(timeString)) {
+            System.out.println("Time slot is available");
             return 1; // time slot is available
         } else {
+            System.out.println("Time slot unavailable");
             return 0; // time slot unavailable
         }
     }
-
+    
     public boolean validatePatient(Patient patient) {
         Patient existing = patientRepository.findByEmailOrPhone(patient.getEmail(), patient.getPhone());
         return existing == null;
