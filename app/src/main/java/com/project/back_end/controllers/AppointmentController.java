@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/appointments")
@@ -96,16 +97,52 @@ public class AppointmentController {
     }
 
 
-    @PutMapping("/{token}")
-    public ResponseEntity<?> updateAppointment(@PathVariable String token, @RequestBody Appointment appointment) {
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAppointment(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> body) {
+
+        if (token.startsWith("Bearer ")) token = token.substring(7);
+
         var tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getBody().get("message").equals("Token is valid")) {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
 
-        appointmentService.updateAppointment(appointment);
-        return ResponseEntity.ok(Map.of("message", "Appointment updated successfully"));
+        try {
+            Long appointmentId = Long.valueOf(body.get("id").toString());
+            Long doctorId = Long.valueOf(body.get("doctor").toString().replaceAll("[^0-9]", ""));
+            Long patientId = Long.valueOf(body.get("patient").toString().replaceAll("[^0-9]", ""));
+            LocalDateTime appointmentTime = LocalDateTime.parse(body.get("appointmentTime").toString());
+            int status = Integer.parseInt(body.get("status").toString());
+
+            Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+            Patient patient = patientRepository.findById(patientId).orElse(null);
+
+            if (doctor == null || patient == null) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid doctor or patient"));
+            }
+
+            Optional<Appointment> existing = appointmentService.getAppointmentById(appointmentId);
+            if (existing.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Appointment not found"));
+            }
+
+            Appointment updatedAppointment = existing.get();
+            updatedAppointment.setDoctor(doctor);
+            updatedAppointment.setPatient(patient);
+            updatedAppointment.setAppointmentTime(appointmentTime);
+            updatedAppointment.setStatus(status);
+
+            appointmentService.updateAppointment(updatedAppointment);
+
+            return ResponseEntity.ok(Map.of("message", "Appointment updated successfully"));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Invalid request body"));
+        }
     }
+
 
      @DeleteMapping("/{id}/{token}")
      public ResponseEntity<?> cancelAppointment(@PathVariable Long id,@PathVariable String token) {

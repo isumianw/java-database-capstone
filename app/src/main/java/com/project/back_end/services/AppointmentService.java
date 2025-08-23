@@ -112,4 +112,9 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
+
+    public Optional<Appointment> getAppointmentById(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId);
+    }
+    
 }

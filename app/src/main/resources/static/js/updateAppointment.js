@@ -25,10 +25,18 @@ async function initializePage() {
   }
 
   // get doctor to display only the available time of doctor
-  window.getDoctors()
-    .then(doctors => {
+    window.getDoctors()
+    .then(doctorsResponse => {
+      console.log("Doctors response:", doctorsResponse);
+
+      // Normalize response: sometimes API returns { doctors: [...] }
+      const doctors = Array.isArray(doctorsResponse)
+        ? doctorsResponse
+        : doctorsResponse.doctors || Object.values(doctorsResponse) || [];
+
       // Find the doctor by the ID from the URL
       const doctor = doctors.find(d => d.id == doctorId);
+
       if (!doctor) {
         alert("Doctor not found.");
         return;
@@ -50,7 +58,7 @@ async function initializePage() {
 
       // Handle form submission for updating the appointment
       document.getElementById("updateAppointmentForm").addEventListener("submit", async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
         const date = document.getElementById("appointmentDate").value;
         const time = document.getElementById("appointmentTime").value;
@@ -62,18 +70,19 @@ async function initializePage() {
         }
 
         const updatedAppointment = {
-          id: appointmentId,
-          doctor: { id: doctor.id },
-          patient: { id: patientId },
-          appointmentTime: `${date}T${startTime}:00`,
-          status: 0
+            id: appointmentId,
+            doctor: doctorId,       
+            patient: patientId,    
+            appointmentTime: `${date}T${startTime}:00`,
+            status: 0
         };
+        
 
         const updateResponse = await window.updateAppointment(updatedAppointment, token);
 
         if (updateResponse.success) {
           alert("✅ Appointment updated successfully!");
-          window.location.href = "../pages/patientAppointments.html"; // Redirect back
+          window.location.href = "../pages/patientAppointments.html";
         } else {
           alert("❌ Failed to update appointment: " + updateResponse.message);
         }
