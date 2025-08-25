@@ -11,4 +11,4 @@
  *   fetch(`${API_BASE_URL}/api/appointments`)
  */
 
-window.API_BASE_URL = "https://isumianw93-8080.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/";
+window.API_BASE_URL = "http://localhost:8080";
